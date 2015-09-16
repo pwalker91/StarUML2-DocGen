@@ -1,0 +1,18 @@
+{
+    "name": "staruml.funcspec",
+    "title": "Functional Specification",
+    "description": "Functional Specification document generation.",
+    "homepage": "https://github.com/pwalker91/StarUML2-FuncSpecGen",
+    "issues": "https://github.com/pwalker91/StarUML2-FuncSpecGen",
+    "keywords": ["functional", "specification", "HTML", "document"],
+    "version": "0.1.0",
+    "author": {
+        "name": "Peter Walker",
+        "email": "peter.walker@sjsu.edu",
+        "url": "https://github.com/pwalker91"
+    },
+    "license": "WTFPL",
+    "engines": {
+        "staruml": ">=2.0.0"
+    }
+}
