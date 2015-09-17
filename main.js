@@ -15,7 +15,7 @@ define(function (require, exports, module) {
         CommandManager  = app.getModule("command/CommandManager"),
         MenuManager     = app.getModule("menu/MenuManager"),
         Dialogs         = app.getModule("dialogs/Dialogs");//,
-        //FSGen           = require("src/FunctionalSpec.js");
+        //FSGen           = require("DocGen/FunctionalSpec.js");
 
     // local handler for Design Spec gen
     function handleDSGen() {

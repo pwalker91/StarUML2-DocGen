@@ -15,7 +15,7 @@
             "url": "https://staruml@github.com/pwalker91/StarUML2-FuncSpecGen.git"
         },
 
-    "files": ["src", "src/*", "src/**"],
+    "files": ["DocGen", "DocGen/*", "DocGen/**"],
 
     "author": {
         "name": "Peter Walker",
