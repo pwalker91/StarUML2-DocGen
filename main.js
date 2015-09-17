@@ -33,7 +33,7 @@ define(function (require, exports, module) {
 
 
     // Add Generate Functional Spec menu item (Tools > Generate...)
-    var toolsMenuLast = MenuManager.getMenu(Commands.TOOLS).LAST;
+    var toolsMenu = MenuManager.getMenu(Commands.TOOLS);
     var genMenu = toolsMenu.addMenuItem(CMD_GENERATEDOC, MenuManager.AFTER, toolsMenu.LAST);
     genMenu.addMenuItem(CMD_GEN_FUNCSPEC);
     //genMenu.addMenuDivider();
