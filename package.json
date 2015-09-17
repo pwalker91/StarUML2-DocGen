@@ -3,7 +3,7 @@
     "title": "Functional Specification",
     "description": "Functional Specification document generation.",
     "homepage": "https://github.com/pwalker91/StarUML2-FuncSpecGen",
-    "issues": "https://github.com/pwalker91/StarUML2-FuncSpecGen",
+    "issues": "https://github.com/pwalker91/StarUML2-FuncSpecGen/issues",
     "keywords": ["functional", "specification", "HTML", "document"],
     "version": "0.1.0",
     "author": {

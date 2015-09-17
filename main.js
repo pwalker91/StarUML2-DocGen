@@ -11,11 +11,13 @@ define(function (require, exports, module) {
 
     var Commands       = app.getModule("command/Commands"),
         CommandManager = app.getModule("command/CommandManager"),
-        MenuManager    = app.getModule("menu/MenuManager");
+        MenuManager    = app.getModule("menu/MenuManager"),
+        Dialogs        = app.getModule("dialogs/Dialogs");
 
     // Handler for HelloWorld command
     function handleHelloWorld() {
         window.alert("Hello, world!");
+        Dialogs.showErrorDialog("I am a dangerous error. Fear me!!");
     }
 
     // Add a HelloWorld command
