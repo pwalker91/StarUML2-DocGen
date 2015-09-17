@@ -1,10 +1,10 @@
 {
-    "name": "staruml.funcspec",
-    "title": "Functional Specification",
-    "description": "Functional Specification document generation.",
+    "name": "pwalker91.docgen",
+    "title": "Document Generation",
+    "description": "Software Engineering document generation from UML Models",
     "homepage": "https://github.com/pwalker91/StarUML2-FuncSpecGen",
     "issues": "https://github.com/pwalker91/StarUML2-FuncSpecGen/issues",
-    "keywords": ["functional", "specification", "HTML", "document"],
+    "keywords": ["document", "generation", "HTML", "software", "engineering"],
     "version": "0.1.0",
     "author": {
         "name": "Peter Walker",

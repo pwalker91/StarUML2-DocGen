@@ -2,25 +2,24 @@
 /**
  * Currently a basic Hello World extension for StarUML 2.0
  *
- * AUTHOR:  Peter WALKER
+ * AUTHOR:  Peter Walker
  * DATE:    16 September 2015
  */
 
 define(function (require, exports, module) {
     "use strict";
 
+    //Importing the StarUML global modules that we want to use,
+    // as well as local scripts that we require for operation
     var Commands       = app.getModule("command/Commands"),
         CommandManager = app.getModule("command/CommandManager"),
         MenuManager    = app.getModule("menu/MenuManager"),
-        Dialogs        = app.getModule("dialogs/Dialogs");
+        Dialogs        = app.getModule("dialogs/Dialogs"),
+        FSGen          = require("./source/FunctionalSpec.js");
 
-    // Handler for Generate commands
-    function handleFSGen() {
-        window.alert("Hello, world!");
-        Dialogs.showErrorDialog("I am a dangerous error. Fear me!!");
-    }
+    // local handler for Design Spec gen
     function handleDSGen() {
-        window.alert("I'm not implemented yet!");
+        Dialogs.showAlertDialog("I'm not implemented yet!");
     }
 
     // Add a Generate Document menu
@@ -28,7 +27,7 @@ define(function (require, exports, module) {
         CMD_GEN_FUNCSPEC   = "tools.generatedoc.funcspec",
         CMD_GEN_DESIGNSPEC = "tools.generatedoc.designspec";
     CommandManager.register("Generate Document", CMD_GENERATEDOC, CommandManager.doNothing);
-    CommandManager.register("Functional Specification", CMD_GEN_FUNCSPEC, handleFSGen);
+    CommandManager.register("Functional Specification", CMD_GEN_FUNCSPEC, FSGen.test_alert);
     CommandManager.register("Design Specification", CMD_GEN_DESIGNSPEC, handleDSGen);
 
 
