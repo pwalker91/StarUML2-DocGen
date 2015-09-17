@@ -14,17 +14,19 @@ define(function (require, exports, module) {
         MenuManager    = app.getModule("menu/MenuManager"),
         Dialogs        = app.getModule("dialogs/Dialogs");
 
-    // Handler for HelloWorld command
-    function handleHelloWorld() {
+    // Handler for Generate command
+    function handleFSGen() {
         window.alert("Hello, world!");
         Dialogs.showErrorDialog("I am a dangerous error. Fear me!!");
     }
 
-    // Add a HelloWorld command
-    var CMD_HELLOWORLD = "tools.helloworld";
-    CommandManager.register("Hello World", CMD_HELLOWORLD, handleHelloWorld);
+    // Add a Generate Functional Spec command
+    var CMD_GENFUNCSPEC = "tools.helloworld";
+    CommandManager.register("Generate Functional Specification",
+                            CMD_GENFUNCSPEC,
+                            handleFSGen);
 
-    // Add HelloWorld menu item (Tools > Hello World)
+    // Add Generate Functional Spec menu item (Tools > Generate...)
     var menu = MenuManager.getMenu(Commands.TOOLS);
-    menu.addMenuItem(CMD_HELLOWORLD);
+    menu.addMenuItem(CMD_GENFUNCSPEC);
 });
