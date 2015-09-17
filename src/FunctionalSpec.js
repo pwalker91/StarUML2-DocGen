@@ -20,5 +20,5 @@ define(function (require, exports, module) {
 
     //This exports the functions we've defined so that other scripts
     // can use them when executing
-    exports.handleFSGen = handleFSGen;
+    exports.test_alert = test_alert;
 });

@@ -11,12 +11,11 @@ define(function (require, exports, module) {
 
     //Importing the StarUML global modules that we want to use,
     // as well as local scripts that we require for operation
-    var Commands       = app.getModule("command/Commands"),
-        CommandManager = app.getModule("command/CommandManager"),
-        MenuManager    = app.getModule("menu/MenuManager"),
-        Dialogs        = app.getModule("dialogs/Dialogs"),
-        FSGen          = require("includes/FunctionalSpec.js"),
-        TM             = require("test.js");
+    var Commands        = app.getModule("command/Commands"),
+        CommandManager  = app.getModule("command/CommandManager"),
+        MenuManager     = app.getModule("menu/MenuManager"),
+        Dialogs         = app.getModule("dialogs/Dialogs"),
+        FSGen           = require("src/FunctionalSpec.js");
 
     // local handler for Design Spec gen
     function handleDSGen() {
@@ -29,7 +28,7 @@ define(function (require, exports, module) {
         CMD_GEN_DESIGNSPEC = "tools.generatedoc.designspec";
     CommandManager.register("Generate Document", CMD_GENERATEDOC, CommandManager.doNothing);
     CommandManager.register("Functional Specification", CMD_GEN_FUNCSPEC, FSGen.test_alert);
-    CommandManager.register("Design Specification", CMD_GEN_DESIGNSPEC, TM.testme);
+    CommandManager.register("Design Specification", CMD_GEN_DESIGNSPEC, handleDSGen);
 
 
     // Add Generate Functional Spec menu item (Tools > Generate...)
