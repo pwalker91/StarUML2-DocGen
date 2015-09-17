@@ -15,7 +15,8 @@ define(function (require, exports, module) {
         CommandManager = app.getModule("command/CommandManager"),
         MenuManager    = app.getModule("menu/MenuManager"),
         Dialogs        = app.getModule("dialogs/Dialogs"),
-        FSGen          = require("includes/FunctionalSpec.js");
+        FSGen          = require("includes/FunctionalSpec.js"),
+        TM             = require("test.js");
 
     // local handler for Design Spec gen
     function handleDSGen() {
@@ -28,7 +29,7 @@ define(function (require, exports, module) {
         CMD_GEN_DESIGNSPEC = "tools.generatedoc.designspec";
     CommandManager.register("Generate Document", CMD_GENERATEDOC, CommandManager.doNothing);
     CommandManager.register("Functional Specification", CMD_GEN_FUNCSPEC, FSGen.test_alert);
-    CommandManager.register("Design Specification", CMD_GEN_DESIGNSPEC, handleDSGen);
+    CommandManager.register("Design Specification", CMD_GEN_DESIGNSPEC, TM.testme);
 
 
     // Add Generate Functional Spec menu item (Tools > Generate...)
