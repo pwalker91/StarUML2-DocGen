@@ -11,9 +11,6 @@ define(
     //The name of this module
     "DocGen/FunctionalSpec",
 
-    //The array of dependencies
-    ["dialogs/Dialogs", "utils/ExtensionUtils"],
-
     //The function to execute when all dependencies have loaded.
     function (require, exports, module) {
         "use strict";
