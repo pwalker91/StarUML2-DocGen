@@ -1,6 +1,6 @@
 {
     "name": "pwalker91.docgen",
-    "version": "0.1.0",
+        "version": "0.1.0",
         "title": "Document Generation",
         "description": "Software Engineering document generation from UML Models",
         "keywords": ["document", "generation", "HTML", "software", "engineering"],
