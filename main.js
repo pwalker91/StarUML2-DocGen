@@ -63,5 +63,4 @@ define(function (require, exports, module) {
     genMenu.addMenuDivider();
     genMenu.addMenuItem(CMD_GEN_NOTIMP);
 
-    console.log(window.location);
 });
