@@ -23,5 +23,5 @@ define(function (require, exports, module) {
 
     //This exports the functions we've defined so that other scripts
     // can use them when executing
-    exports.DesignSpec = DesignSpec;
+    exports.object = DesignSpec;
 });

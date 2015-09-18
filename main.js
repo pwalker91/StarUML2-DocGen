@@ -22,8 +22,19 @@ define(function (require, exports, module) {
         //Notice that the name of the modules below are the exact same as
         // the name of the files, but DO NOT end with '.js'. This was
         // causing me confusion early on.
-        FSGen           = require("DocGen/FunctionalSpec"),
-        DSGen           = require("DocGen/DesignSpec");
+        //What require returns is the 'exports' object that was used (likely)
+        // at the end of the file. In this case, I put the object constructor
+        // for my 'FunctionalSpec' object in the 'exports' object under the
+        // attribute 'object'.
+        FunctionalSpec  = require("DocGen/FunctionalSpec"),
+        DesignSpec      = require("DocGen/DesignSpec");
+
+    //Now I'm actually using the objects I imported using require()
+    // to create an instance, which will be used later on.
+    //If I had instead put a FUNCTION in an attribute of exports, I could
+    // call it using the appropiate attribute.
+    var FSGen = new FunctionalSpec.object,
+        DSGen = new DesignSpec.object;
 
     // local handler for Design Spec gen
     function localAlert() {
@@ -35,10 +46,10 @@ define(function (require, exports, module) {
         CMD_GEN_FUNCSPEC   = "tools.generatedoc.funcspec",
         CMD_GEN_DESIGNSPEC = "tools.generatedoc.designspec",
         CMD_GEN_NOTIMP     = "tools.generatedoc.notimp";
-    CommandManager.register("Generate Document", CMD_GENERATEDOC, CommandManager.doNothing);
-    CommandManager.register("Functional Specification", CMD_GEN_FUNCSPEC, FSGen.test_alert);
-    CommandManager.register("Design Specification", CMD_GEN_DESIGNSPEC, DSGen.test_alert);
-    CommandManager.register("Not Implemented!!", CMD_GEN_NOTIMP, localAlert);
+    CommandManager.register("Generate Document",        CMD_GENERATEDOC,    CommandManager.doNothing);
+    CommandManager.register("Functional Specification", CMD_GEN_FUNCSPEC,   FSGen.test_alert);
+    CommandManager.register("Design Specification",     CMD_GEN_DESIGNSPEC, DSGen.test_alert);
+    CommandManager.register("Not Implemented!!",        CMD_GEN_NOTIMP,     localAlert);
 
     // Add Generate Functional Spec menu item (Tools > Generate...)
     var toolsMenu = MenuManager.getMenu(Commands.TOOLS);
