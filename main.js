@@ -15,10 +15,13 @@ define(function (require, exports, module) {
         CommandManager  = app.getModule("command/CommandManager"),
         MenuManager     = app.getModule("menu/MenuManager"),
         Dialogs         = app.getModule("dialogs/Dialogs"),
+        ExtensionUtils  = app.getModule("utils/ExtensionUtils"),
         //FSGen           = require("DocGen/FunctionalSpec.js");
         //FSGen           = require("FunctionalSpec.js");
         x=1;
 
+    console.log(require, exports, module);
+    console.log( ExtensionUtils.getModulePath(this) );
     // local handler for Design Spec gen
     function handleDSGen() {
         Dialogs.showAlertDialog("I'm not implemented yet!");
