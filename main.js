@@ -20,8 +20,8 @@ define(function (require, exports, module) {
         //FSGen           = require("FunctionalSpec.js");
         x=1;
 
-    console.log(require, exports, module);
-    console.log( ExtensionUtils.getModulePath(this) );
+    console.log(module);
+    console.log( ExtensionUtils.getModulePath(module) );
     // local handler for Design Spec gen
     function handleDSGen() {
         Dialogs.showAlertDialog("I'm not implemented yet!");
