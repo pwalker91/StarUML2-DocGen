@@ -1,7 +1,7 @@
 
 /**
  * The functions for when a user wants to generate
- *  a Functional Specification
+ *  a Functional Specification document
  *
  * AUTHOR:  Peter Walker
  * DATE:    16 September 2015
@@ -15,7 +15,6 @@ define(function (require, exports, module) {
 
     function test_alert() {
         Dialogs.showAlertDialog("Hello, world!");
-        Dialogs.showErrorDialog("I am a dangerous error. Fear me!!");
     }
 
     //This exports the functions we've defined so that other scripts

@@ -1,10 +1,10 @@
 
 /**
  * The functions for when a user wants to generate
- *  a Functional Specification
+ *  a Design Specification document
  *
  * AUTHOR:  Peter Walker
- * DATE:    16 September 2015
+ * DATE:    17 September 2015
  */
 
 define(function (require, exports, module) {
@@ -14,7 +14,6 @@ define(function (require, exports, module) {
     var Dialogs = app.getModule("dialogs/Dialogs");
 
     function test_alert() {
-        Dialogs.showAlertDialog("Hello, world!");
         Dialogs.showErrorDialog("I am a dangerous error. Fear me!!");
     }
 
