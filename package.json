@@ -1,22 +1,11 @@
 {
     "name": "pwalker91.docgen",
-        "version": "0.1.0",
-        "title": "Document Generation",
-        "description": "Software Engineering document generation from UML Models",
-        "keywords": ["document", "generation", "HTML", "software", "engineering"],
-
-    "homepage": "https://github.com/pwalker91/StarUML2-FuncSpecGen",
-        "bugs": {
-            "url": "https://github.com/pwalker91/StarUML2-FuncSpecGen/issues",
-            "email": "peter.walker@sjsu.edu"
-        },
-        "repository": {
-            "type": "git",
-            "url": "https://staruml@github.com/pwalker91/StarUML2-FuncSpecGen.git"
-        },
-
-    "files": ["DocGen", "DocGen/*", "DocGen/**"],
-
+    "title": "Document Generation",
+    "description": "Software Engineering document generation from UML Models",
+    "homepage": "https://github.com/pwalker91/StarUML2-DocGen",
+    "issues": "https://github.com/pwalker91/StarUML2-DocGen/issues",
+    "keywords": ["document", "generation", "HTML", "software", "engineering"],
+    "version": "0.1.0",
     "author": {
         "name": "Peter Walker",
         "email": "peter.walker@sjsu.edu",
