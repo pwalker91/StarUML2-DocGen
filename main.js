@@ -30,14 +30,17 @@ define(function (require, exports, module) {
         ExtensionUtils  = app.getModule("utils/ExtensionUtils");
 
     var homebase = ExtensionUtils.getModulePath(module);
-    var FSGen           = require(homebase + "DocGen/FunctionalSpec.js"),
-        DSGen           = require(homebase + "DocGen/DesignSpec.js");
+    //var FSGen           = require(homebase + "./DocGen/FunctionalSpec.js"),
+    //    DSGen           = require(homebase + "./DocGen/DesignSpec.js");
+
+    console.log(module);
+    console.log(homebase);
 
     //And just because, we are going to log the license for this product,
     // because it's funny and I think everyone should read it, if they feel so
     // inclined to open their dev tools.
-    var LICENSE = require(homebase + "LICENSE.md");
-    console.log(LICENSE);
+    //var LICENSE = require(homebase + "LICENSE.md");
+    //console.log(LICENSE);
 
     // local handler for Design Spec gen
     function localAlert() {
@@ -50,8 +53,8 @@ define(function (require, exports, module) {
         CMD_GEN_DESIGNSPEC = "tools.generatedoc.designspec",
         CMD_GEN_NOTIMP     = "tools.generatedoc.notimp";
     CommandManager.register("Generate Document", CMD_GENERATEDOC, CommandManager.doNothing);
-    CommandManager.register("Functional Specification", CMD_GEN_FUNCSPEC, FSGen.test_alert);
-    CommandManager.register("Design Specification", CMD_GEN_DESIGNSPEC, DSGen.test_alert);
+    CommandManager.register("Functional Specification", CMD_GEN_FUNCSPEC, localAlert);//FSGen.test_alert);
+    CommandManager.register("Design Specification", CMD_GEN_DESIGNSPEC, localAlert);//DSGen.test_alert);
     CommandManager.register("Not Implemented!!", CMD_GEN_NOTIMP, localAlert);
 
 
