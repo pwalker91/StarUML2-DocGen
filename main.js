@@ -39,4 +39,6 @@ define(function (require, exports, module) {
     genMenu.addMenuItem(CMD_GEN_FUNCSPEC);
     //genMenu.addMenuDivider();
     genMenu.addMenuItem(CMD_GEN_DESIGNSPEC);
+
+    console.log(window.location);
 });
