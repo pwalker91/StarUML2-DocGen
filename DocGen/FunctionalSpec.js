@@ -8,22 +8,22 @@
  */
 
 define(
-    //The name of this module
-    "DocGen/FunctionalSpec",
-
-    //The function to execute when all dependencies have loaded.
     function (require, exports, module) {
         "use strict";
 
         //Importing the StarUML global modules that we want to use
         var Dialogs = app.getModule("dialogs/Dialogs");
 
-        function test_alert() {
-            Dialogs.showAlertDialog("Hello, world!");
+        function FunctionalSpec() {
+            this.nothing = null;
         }
+
+        FunctionalSpec.prototype.test_alert = function test_alert() {
+            Dialogs.showAlertDialog("Hello, world!");
+        };
 
         //This exports the functions we've defined so that other scripts
         // can use them when executing
-        exports.test_alert = test_alert;
+        exports.FunctionalSpec = FunctionalSpec;
     }
 );
