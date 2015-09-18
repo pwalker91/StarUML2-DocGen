@@ -4,13 +4,15 @@
  *
  * AUTHOR:  Peter Walker
  * DATE:    16 September 2015
+ *
+ * If you are confused, start here...
+ * http://requirejs.org/docs/why.html
  */
 
 define(
-    //The array of dependencies
-    ["command/Commands", "command/CommandManager", "dialogs/Dialogs",
-     "menu/MenuManager", "utils/ExtensionUtils",
-     "DocGen/FunctionalSpec", "DocGen/DesignSpec" ],
+    //The array of LOCAL dependencies (don't include stuff that's included
+    // using the app.getModule() call)
+    ["DocGen/FunctionalSpec", "DocGen/DesignSpec" ],
 
     //The function to execute when all dependencies have loaded.
     function (require, exports, module) {
