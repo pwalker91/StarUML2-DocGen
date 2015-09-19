@@ -50,12 +50,60 @@ define(function (require, exports, module) {
         if ( !(project instanceof type.Project) ) {
             return result.reject("Was not given a project");
         }
-        var directory = new type.Directory(path, FileSystem);
-        console.log(directory);
+
+        //Make folder in directory
+            //make folder in folder for images
+            // make folder in folder for css
+
+        //find info in project
+            //basic info
+            //uml model(s)
+                // model = {"usecases":[], "diagrams":[]}
+                //use cases
+                //diagram
+
+        // ask user for css styling (??)
+
+        //build HTML file
+
+        //exit
+
+
+
+
+
+        var directory = FileSystem.getDirectoryForPath(path);
+        console.log("created directory obj", directory);
+        var newdirectory = FileSystem.getDirectoryForPath(directory.fullPath+"mynewdir");
+        newdirectory.create();
+        var newerdirectory = FileSystem.getDirectoryForPath(path+"/mynewerdir");
+        newerdirectory.create();
+        var newerfile = FileSystem.getFileForPath(path+"/mynewerdir/testfile.txt");
+        console.log("writing file");
+        //NOTE: Callbacks, fucking everywhere.
+        newerfile.write("FILE CONTENTS",
+        function(err, stats) {
+            console.log("all directories", directory, newdirectory, newerdirectory);
+            console.log(newerdirectory.getContents(
+                function(err, entries, stats){
+                    console.log("getting newer contents", err, entries, stats);
+                }));
+            newerfile.moveToTrash(
+            function(err) {
+                console.log(newerdirectory.getContents(
+                    function(err, entries, stats){
+                        console.log("getting newer contents 2", err, entries, stats);
+                    }));
+            });
+        });
+
+        var temp1 = project.find_a_diagram_object_to_use();
+        CommandManager.get("file.exportDiagramAs.png")
+            ._commandFn(temp1,"/Users/peterwalker/Desktop/imtestingthis1.png");
 
         var DOCUMENT = new FunctionalSpec();
         DOCUMENT.project = project;
-        console.log(DOCUMENT);
+        console.log("my object", DOCUMENT);
 
         return result.resolve("I think I'm doing this correctly...");
     }
