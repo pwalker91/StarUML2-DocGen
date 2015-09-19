@@ -35,15 +35,17 @@ define(function (require, exports, module) {
     *       element and path, and creating the Functional Specification document
     * @param    project : type.Project  : __
     * @param    path    : String?       : __
-    * @return   Boolean : Success(TRUE) or failure(FALSE) of document creation
+    * @return   Deferred resolution : A REJECT or RESOLVE ending for our Deferred
     */
     function execute(project, path) {
+        var result = new $.Deferred();
+
         console.log(project);
         console.log(path);
         if ( !(project instanceof type.Project) ) {
-            return false;
+            return result.reject("Was not given a project");
         }
-        return true;
+        return result.resolve("I think I'm doing this correctly...");
     }
 
     //This exports the functions we've defined so that other scripts

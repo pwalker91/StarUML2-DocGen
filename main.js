@@ -66,57 +66,94 @@ define(function (require, exports, module) {
     *       The logic for this function was copied from the StarUMLJS extension
     */
     function handleFuncSpecGen(baseElem, path, opts) {
-        //A boolean value, which will be returned when we finish the function
-        var returns = false;
+        //Because our function depends on user input, we cannot halt the
+        // execution for each branch. The solution is to create a Deferred
+        // object, a kind of AJAX-like object, and as the user responds to
+        // dialogs or other code executes, we update this object.
+        var result = new $.Deferred();
 
-        //If baseElem is not assigned, popup the ElementPickerDialog dialog box.
-        //Calling showDialog returns a Promise object, so we modify the data
-        // by adding a .done() function.
-        //If the base element is not defined, we ask the user for one
+        //If baseElem is not defined, popup the ElementPickerDialog dialog box.
+        //Calling showDialog returns a Promise object, a special kind of Deferred
+        // object. What we can do is add a function to execute once the Promise
+        // object completes. In this case, once the user has selected an element,
+        // I can get what button they pressed, and what element was chosen.
         if (!baseElem) {
-            ElementPickerDialog.showDialog("Select a base PROJECT to generate from",
-                                           null, type.Project)
+            ElementPickerDialog.showDialog(
+                "Select a base PROJECT to generate from", null, type.Project)
                 .done(function (buttonId, selected) {
                     if (buttonId === Dialogs.DIALOG_BTN_OK && selected) {
                         baseElem = selected;
+                        if (!path) {
+                            FileSystem.showOpenDialog(
+                                false, true, "Select a folder to place the documents in", null, null,
+                                function (err, files) {
+                                    if (!err) {
+                                        if (files.length > 0) {
+                                            path = files[0];
+                                            //For explanation, see last block
+                                            FunctionalSpec.execute(baseElem, path)
+                                                          .then(result.resolve, result.reject);
+                                        } else {
+                                            //If our function was not able to get the
+                                            // necessary info, and we want to end the
+                                            // execution of our extension, we don't
+                                            // return false (we have a Deferred object).
+                                            // Instead, we resolve the Deferred object,
+                                            // in this case with a false-y end, by
+                                            // REJECTING. And as a parameter, we give
+                                            // the error encountered.
+                                            result.reject(FileSystem.USER_CANCELED);
+                                        }
+                                    } else {
+                                        result.reject(err);
+                                    }
+                                }
+                            );
+                        } else {
+                            //For explanation, see last block
+                            FunctionalSpec.execute(baseElem, path)
+                                          .then(result.resolve, result.reject);
+                        }
+                    } else {
+                        result.reject(err);
                     }
-                    console.log(buttonId, selected);
                 });
         }
-        //If the user has at least chosen/given an element, and we currently
+        //If the user has at given a Project element, and we currently
         // don't have anything in 'path', then we ask the user to tell us where
         // to save the files we are going to create
-        if (baseElem && !path) {
+        else if ((baseElem instanceof type.Project) && !path) {
             FileSystem.showOpenDialog(
-                false, true,
-                "Select a folder to place the documents in",
-                null, null,
+                false, true, "Select a folder to place the documents in", null, null,
                 function (err, files) {
                     if (!err) {
                         if (files.length > 0) {
                             path = files[0];
+                            FunctionalSpec.execute(baseElem, path)
+                                          .then(result.resolve, result.reject);
                         } else {
-                            console.log(FileSystem.USER_CANCELED);
+                            result.reject(FileSystem.USER_CANCELED);
                         }
+                    } else {
+                        result.reject(err);
                     }
-                    console.log(err, files);
                 }
             );
         }
-        console.log("I am here");
-        //And now, if we have both a BASE and a PATH, then we execute.
-        if (baseElem && path) {
+        //If we have both a BASE of type Project and a PATH, then we execute.
+        else if ((baseElem instanceof type.Project) && path) {
             //What's happening here is that the function 'execute' is executing
             // when a base element and path have been given.
             //However, once that is finished, we want to resolve our Deferred object,
             // which is what has been executing this. Using the .then() function, we
             // give this code a way to resolve the Deferred object with either a
             // yay! or nay! at the end (yay=resolve, nay=reject)
-            returns = FunctionalSpec.execute(baseElem, path);
+            FunctionalSpec.execute(baseElem, path)
+                          .then(result.resolve, result.reject);
         }
 
-        //We finish by returning the result of running our function
-        return returns;
+        //We finish by returning a Promise object
+        return result.promise();
     }
 
 
