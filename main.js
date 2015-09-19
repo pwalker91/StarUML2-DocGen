@@ -80,6 +80,7 @@ define(function (require, exports, module) {
                     if (buttonId === Dialogs.DIALOG_BTN_OK && selected) {
                         baseElem = selected;
                     }
+                    console.log(buttonId, selected);
                 });
         }
         //If the user has at least chosen/given an element, and we currently
@@ -98,9 +99,11 @@ define(function (require, exports, module) {
                             console.log(FileSystem.USER_CANCELED);
                         }
                     }
+                    console.log(err, files);
                 }
             );
         }
+        console.log("I am here");
         //And now, if we have both a BASE and a PATH, then we execute.
         if (baseElem && path) {
             //What's happening here is that the function 'execute' is executing
