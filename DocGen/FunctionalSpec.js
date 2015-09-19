@@ -11,9 +11,11 @@ define(function (require, exports, module) {
     "use strict";
 
     //Importing the StarUML global modules that we want to use
-    var Dialogs         = app.getModule("dialogs/Dialogs"),
-        FileSystem      = app.getModule("filesystem/FileSystem"),
-        ExtensionUtils  = app.getModule("utils/ExtensionUtils");
+    var Dialogs             = app.getModule("dialogs/Dialogs"),
+        FileSystem          = app.getModule("filesystem/FileSystem"),
+        SelectionManager    = app.getModule("engine/SelectionManager"),
+        CommandManager      = app.getModule("command/CommandManager"),
+        ExtensionUtils      = app.getModule("utils/ExtensionUtils");
 
     /**
     * @desc This is the FunctionalSpec object, which we will use to
@@ -23,8 +25,7 @@ define(function (require, exports, module) {
     function FunctionalSpec() {
         this.nothing = null;
         this.project = null;
-        this.diagram = null;
-        this.usecases = [];
+        this.models  = [];
     }
         /**
         * @desc This is a simple function for testing that the object works

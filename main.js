@@ -114,14 +114,14 @@ define(function (require, exports, module) {
                                 }
                             );
                         } else {
-                            console.log("Function given path", path)
+                            console.log("Function given path", path);
                             //For explanation, see last block
                             FunctionalSpec.execute(baseElem, path)
                                           .then(result.resolve, result.reject);
                         }
                     } else {
                         console.log("Project element not chosen", buttonId, selected);
-                        result.reject(err);
+                        result.reject("BadElementChosen");
                     }
                 });
         }
