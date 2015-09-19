@@ -11,7 +11,9 @@ define(function (require, exports, module) {
     "use strict";
 
     //Importing the StarUML global modules that we want to use
-    var Dialogs = app.getModule("dialogs/Dialogs");
+    var Dialogs         = app.getModule("dialogs/Dialogs"),
+        FileSystem      = app.getModule("filesystem/FileSystem"),
+        ExtensionUtils  = app.getModule("utils/ExtensionUtils");
 
     /**
     * @desc This is the FunctionalSpec object, which we will use to
@@ -20,14 +22,16 @@ define(function (require, exports, module) {
     */
     function FunctionalSpec() {
         this.nothing = null;
+        this.project = null;
+        this.diagram = null;
+        this.usecases = [];
     }
-
-    /**
-    * @desc This is a simple function for testing that the object works
-    */
-    FunctionalSpec.prototype.test_alert = function test_alert() {
-        Dialogs.showAlertDialog("Hello, world!");
-    };
+        /**
+        * @desc This is a simple function for testing that the object works
+        */
+        FunctionalSpec.prototype.test_alert = function test_alert() {
+            Dialogs.showAlertDialog("Hello, world!");
+        };
 
 
     /**
@@ -40,11 +44,18 @@ define(function (require, exports, module) {
     function execute(project, path) {
         var result = new $.Deferred();
 
-        console.log(project);
-        console.log(path);
+        //Some bookkeeping to do, like checking that we were given
+        // a project, and that the path is a directory
         if ( !(project instanceof type.Project) ) {
             return result.reject("Was not given a project");
         }
+        var directory = new type.Directory(path, FileSystem);
+        console.log(directory);
+
+        var DOCUMENT = new FunctionalSpec();
+        DOCUMENT.project = project;
+        console.log(DOCUMENT);
+
         return result.resolve("I think I'm doing this correctly...");
     }
 

@@ -82,6 +82,7 @@ define(function (require, exports, module) {
                 "Select a base PROJECT to generate from", null, type.Project)
                 .done(function (buttonId, selected) {
                     if (buttonId === Dialogs.DIALOG_BTN_OK && selected) {
+                        console.log("User selected project", selected);
                         baseElem = selected;
                         if (!path) {
                             FileSystem.showOpenDialog(
@@ -89,11 +90,13 @@ define(function (require, exports, module) {
                                 function (err, files) {
                                     if (!err) {
                                         if (files.length > 0) {
+                                            console.log("User selected directory", files);
                                             path = files[0];
                                             //For explanation, see last block
                                             FunctionalSpec.execute(baseElem, path)
                                                           .then(result.resolve, result.reject);
                                         } else {
+                                            console.log("User cancelled directory selection");
                                             //If our function was not able to get the
                                             // necessary info, and we want to end the
                                             // execution of our extension, we don't
@@ -105,16 +108,19 @@ define(function (require, exports, module) {
                                             result.reject(FileSystem.USER_CANCELED);
                                         }
                                     } else {
+                                        console.log("Error in dialog");
                                         result.reject(err);
                                     }
                                 }
                             );
                         } else {
+                            console.log("Function given path", path)
                             //For explanation, see last block
                             FunctionalSpec.execute(baseElem, path)
                                           .then(result.resolve, result.reject);
                         }
                     } else {
+                        console.log("Project element not chosen", buttonId, selected);
                         result.reject(err);
                     }
                 });
@@ -128,13 +134,16 @@ define(function (require, exports, module) {
                 function (err, files) {
                     if (!err) {
                         if (files.length > 0) {
+                            console.log("User selected directory", files);
                             path = files[0];
                             FunctionalSpec.execute(baseElem, path)
                                           .then(result.resolve, result.reject);
                         } else {
+                            console.log("User cancelled directory selection");
                             result.reject(FileSystem.USER_CANCELED);
                         }
                     } else {
+                        console.log("Error in dialog");
                         result.reject(err);
                     }
                 }
@@ -142,6 +151,7 @@ define(function (require, exports, module) {
         }
         //If we have both a BASE of type Project and a PATH, then we execute.
         else if ((baseElem instanceof type.Project) && path) {
+            console.log("Function given project and path", baseElem, path);
             //What's happening here is that the function 'execute' is executing
             // when a base element and path have been given.
             //However, once that is finished, we want to resolve our Deferred object,
