@@ -38,18 +38,12 @@ define(function (require, exports, module) {
     * @return   Boolean : Success(TRUE) or failure(FALSE) of document creation
     */
     function execute(project, path) {
-        var result = new $.Deferred();
-
         console.log(project);
         console.log(path);
-
         if ( !(project instanceof type.Project) ) {
-            result.reject();
-        } else {
-            result.resolve()
+            return false;
         }
-
-        return result.promise();
+        return true;
     }
 
     //This exports the functions we've defined so that other scripts

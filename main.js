@@ -66,10 +66,8 @@ define(function (require, exports, module) {
     *       The logic for this function was copied from the StarUMLJS extension
     */
     function handleFuncSpecGen(baseElem, path, opts) {
-        //We return a Deferred object at the end, which is a type of AJAX-like
-        // object that other code can attach functions to run when the request
-        // completes/fails/times-out/etc.
-        var result = new $.Deferred();
+        //A boolean value, which will be returned when we finish the function
+        var returns = false;
 
         //If baseElem is not assigned, popup the ElementPickerDialog dialog box.
         //Calling showDialog returns a Promise object, so we modify the data
@@ -84,7 +82,9 @@ define(function (require, exports, module) {
                     }
                 });
         }
-        //If the user has at least chosen/given an element,
+        //If the user has at least chosen/given an element, and we currently
+        // don't have anything in 'path', then we ask the user to tell us where
+        // to save the files we are going to create
         if (baseElem && !path) {
             FileSystem.showOpenDialog(
                 false, true,
@@ -95,10 +95,8 @@ define(function (require, exports, module) {
                         if (files.length > 0) {
                             path = files[0];
                         } else {
-                            result.reject(FileSystem.USER_CANCELED);
+                            console.log(FileSystem.USER_CANCELED);
                         }
-                    } else {
-                        result.reject(err);
                     }
                 }
             );
@@ -111,12 +109,11 @@ define(function (require, exports, module) {
             // which is what has been executing this. Using the .then() function, we
             // give this code a way to resolve the Deferred object with either a
             // yay! or nay! at the end (yay=resolve, nay=reject)
-            FunctionalSpec.execute(baseElem, path).then(result.resolve, result.reject);
+            returns = FunctionalSpec.execute(baseElem, path);
         }
 
-        //We finish by returning our Promise object (a Deferred object with
-        // the ability to add functions to only a few listeners)
-        return result.promise();
+        //We finish by returning the result of running our function
+        return returns;
     }
 
 
