@@ -13,6 +13,8 @@ define(function (require, exports, module) {
     //Importing the StarUML global modules that we want to use
     var Dialogs             = app.getModule("dialogs/Dialogs"),
         FileSystem          = app.getModule("filesystem/FileSystem"),
+        FileUtils           = app.getModule("file/FileUtils"),
+        Async               = app.getModule("utils/Async"),
         SelectionManager    = app.getModule("engine/SelectionManager"),
         CommandManager      = app.getModule("command/CommandManager"),
         ExtensionUtils      = app.getModule("utils/ExtensionUtils");
@@ -52,7 +54,8 @@ define(function (require, exports, module) {
         }
 
         //Make folder in directory
-            //make folder in folder for images
+            //if exists, remove then create
+            // make folder in folder for images
             // make folder in folder for css
 
         //find info in project
@@ -96,6 +99,15 @@ define(function (require, exports, module) {
                     }));
             });
         });
+
+        //this might be useful
+        Async.doSequentially(
+            elem.ownedElements,
+            function (child) {
+                return self.generate(child, fullPath, opts);
+            },
+            false
+        ).then(result.resolve, result.reject);
 
         var temp1 = project.find_a_diagram_object_to_use();
         CommandManager.get("file.exportDiagramAs.png")
