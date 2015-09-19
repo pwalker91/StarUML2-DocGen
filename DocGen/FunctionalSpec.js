@@ -59,6 +59,8 @@ define(function (require, exports, module) {
             // make folder in folder for css
 
         //find info in project
+        var array = project.ownedElements; //should be models
+        var subarray = array[index].ownedElements; //should be UMLElements (diagrams, actors, etc.)
             //basic info
             //uml model(s)
                 // model = {"usecases":[], "diagrams":[]}
