@@ -1,0 +1,20 @@
+.title, .header, .user-cases {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.title {
+    text-align: center;
+    font-size: 2.4em;
+    padding-top: 8px;
+    padding-bottom: 12px;
+}
+.header {
+    text-align: left;
+    padding-bottom: 12px;
+    background-color: #CCCCCC;
+}
+.use-cases {
+    text-align: left;
+    padding-bottom: 30px;
+    background-color: #CCCCCC;
+}

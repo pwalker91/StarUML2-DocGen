@@ -64,8 +64,10 @@ define(function (require, exports, module) {
     * @desc This function creates the dialog box where a user can select
     *       a project to convert into a document.
     *       The logic for this function was copied from the StarUMLJS extension
+    * @param    baseElem : Star UML Object
+    * @param    path : String
     */
-    function handleFuncSpecGen(baseElem, path, opts) {
+    function handleFuncSpecGen(baseElem, path) {
         //Because our function depends on user input, we cannot halt the
         // execution for each branch. The solution is to create a Deferred
         // object, a kind of AJAX-like object, and as the user responds to

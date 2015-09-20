@@ -27,7 +27,6 @@ define(function (require, exports, module) {
     function FunctionalSpec() {
         this.nothing = null;
         this.project = null;
-        this.models  = [];
     }
         /**
         * @desc This is a simple function for testing that the object works
@@ -36,90 +35,208 @@ define(function (require, exports, module) {
             Dialogs.showAlertDialog("Hello, world!");
         };
 
+        /* ----------------------------------------------------------------- */
 
-    /**
-    * @desc This function preforms the high level execution, taking a Project
-    *       element and path, and creating the Functional Specification document
-    * @param    project : type.Project  : __
-    * @param    path    : String?       : __
-    * @return   Deferred resolution : A REJECT or RESOLVE ending for our Deferred
-    */
-    function execute(project, path) {
-        var result = new $.Deferred();
+        /**
+        * @desc This takes a given object, which is assumed to be a StarUML object
+        *       that has "ownedElements", and checks that it is of a given type.
+        *       It then loops through its owned elements, searching for the second
+        *       given type.
+        * @param    StarUMLType : Class : A class type in StarUML 2
+        * @return   Array of elements extracted
+        */
+        FunctionalSpec.prototype._extractType = function(obj, objType, searchType) {
+            if (obj !== null && (obj instanceof objType)) {
+                var allElems = [],
+                    _oldlength = obj.ownedElements.length,
+                    _newlength = 0;
+                for (var ind=0; ind<obj.ownedElements.length; ind++) {
+                    var _newitem = obj.ownedElements[ind];
+                    if (_newitem instanceof searchType) {
+                        _newlength = allElems.push( _newitem );
+                        if (_newlength === _oldlength+1) {
+                            _oldlength = _newlength;
+                        }
+                    }
+                }
+                return allElems;
+            }
+            return [];
+        };
+        /**
+        * @desc Given that the FunctionalSpec object has a Project element in
+        *       its 'project' attribute, this extracts all of the UML Models inside
+        * @return   Array of UMLModel(s)
+        */
+        FunctionalSpec.prototype._extractUMLModels = function() {
+            return this._extractType(this.project, type.Project, type.UMLModel);
+        };
+        /**
+        *
+        */
+        FunctionalSpec.prototype._extractUseCases = function(aModel) {
+            return this._extractType(aModel, type.UMLModel, type.UMLUseCase);
+        };
+        /**
+        *
+        */
+        FunctionalSpec.prototype._extractDiagrams = function(aModel) {
+            return this._extractType(aModel, type.UMLModel, type.UMLDiagram);
+        };
 
-        //Some bookkeeping to do, like checking that we were given
-        // a project, and that the path is a directory
-        if ( !(project instanceof type.Project) ) {
-            return result.reject("Was not given a project");
-        }
+        /* ----------------------------------------------------------------- */
 
-        //Make folder in directory
-            //if exists, remove then create
-            // make folder in folder for images
-            // make folder in folder for css
+        /**
+        *
+        */
+        FunctionalSpec.prototype._convertUseCaseToHTML = function(usecase) {
+            // body...
+        };
+        /**
+        *
+        */
+        FunctionalSpec.prototype._convertModelToHTML  = function(model) {
+            var HTML = "";
+            var useCases = this._extractUseCases(model);
 
-        //find info in project
-        var array = project.ownedElements; //should be models
-        var subarray = array[index].ownedElements; //should be UMLElements (diagrams, actors, etc.)
-            //basic info
             //uml model(s)
                 // model = {"usecases":[], "diagrams":[]}
                 //use cases
                 //diagram
+            HTML += "<div id=\"use-cases\">";
+            for (var ind2=0; ind2<useCases.length; ind2++) {
+                HTML += this._convertUseCaseToHTML(useCases[ind2]);
+            }
+            HTML += "</div>";
 
-        // ask user for css styling (??)
+            return HTML;
+        };
+        /**
+        *
+        */
+        FunctionalSpec.prototype._convertProjectToHTMLHeader = function(project) {
+            // body...
+        };
 
-        //build HTML file
+        /* ----------------------------------------------------------------- */
 
-        //exit
-
-
-
-
-
-        var directory = FileSystem.getDirectoryForPath(path);
-        console.log("created directory obj", directory);
-        var newdirectory = FileSystem.getDirectoryForPath(directory.fullPath+"mynewdir");
-        newdirectory.create();
-        var newerdirectory = FileSystem.getDirectoryForPath(path+"/mynewerdir");
-        newerdirectory.create();
-        var newerfile = FileSystem.getFileForPath(path+"/mynewerdir/testfile.txt");
-        console.log("writing file");
-        //NOTE: Callbacks, fucking everywhere.
-        newerfile.write("FILE CONTENTS",
-        function(err, stats) {
-            console.log("all directories", directory, newdirectory, newerdirectory);
-            console.log(newerdirectory.getContents(
-                function(err, entries, stats){
-                    console.log("getting newer contents", err, entries, stats);
-                }));
-            newerfile.moveToTrash(
-            function(err) {
+        /**
+        *
+        */
+        FunctionalSpec.prototype._writeCSS = function(CSSFolder) {
+            ExtensionUtils.loadFile(module, "css file path").done(function(){});
+            var result = $.Deferred();
+            return result.promise();
+        };
+        /**
+        *
+        */
+        FunctionalSpec.prototype._writeImages = function(ImageFolder, diagrams) {
+            var temp1 = project.find_a_diagram_object_to_use();
+            CommandManager.get("file.exportDiagramAs.png")
+                ._commandFn(temp1,"/Users/peterwalker/Desktop/imtestingthis1.png");
+        };
+        /**
+        *
+        */
+        FunctionalSpec.prototype._writeHTML = function(HomeFolder, HTML) {
+            newerfile.write("FILE CONTENTS",
+            function(err, stats) {
+                console.log("all directories", directory, newdirectory, newerdirectory);
                 console.log(newerdirectory.getContents(
                     function(err, entries, stats){
-                        console.log("getting newer contents 2", err, entries, stats);
+                        console.log("getting newer contents", err, entries, stats);
                     }));
+                newerfile.moveToTrash(
+                function(err) {
+                    console.log(newerdirectory.getContents(
+                        function(err, entries, stats){
+                            console.log("getting newer contents 2", err, entries, stats);
+                        }));
+                });
             });
-        });
+        };
 
-        //this might be useful
-        Async.doSequentially(
-            elem.ownedElements,
-            function (child) {
-                return self.generate(child, fullPath, opts);
-            },
-            false
-        ).then(result.resolve, result.reject);
+        /* ----------------------------------------------------------------- */
 
-        var temp1 = project.find_a_diagram_object_to_use();
-        CommandManager.get("file.exportDiagramAs.png")
-            ._commandFn(temp1,"/Users/peterwalker/Desktop/imtestingthis1.png");
+        /**
+        *
+        */
+        FunctionalSpec.prototype._createUseCaseHTML = function() {
+            var HTML = "";
+            var models = this._extractUMLModels();
+            //This loop will potentially add multiple divs, all of which
+            // represent a UMLModel from the project
+            for (var ind=0; ind<models.length; ind++) {
+                HTML += this._convertModelToHTML(models[ind]);
+            }
+            return HTML;
+        };
+        /**
+        *
+        */
+        FunctionalSpec.prototype.createHTML = function(project, home) {
+            var result = $.Deferred();
+            var HTML = "";
 
-        var DOCUMENT = new FunctionalSpec();
-        DOCUMENT.project = project;
-        console.log("my object", DOCUMENT);
+            //Some bookkeeping to do, like checking that we were given a project
+            if ( !(project instanceof type.Project) ) {
+                result.reject("Was not given a project");
+            } else {
+                this.project = project;
+            }
 
-        return result.resolve("I think I'm doing this correctly...");
+            //Creating the necessary directories that we will be saving our HTML,
+            // image, and CSS documents to.
+            var HOME    = FileSystem.getDirectoryForPath(home),
+                IMAGES  = FileSystem.getDirectoryForPath(HOME.fullPath+"/images"),
+                CSS     = FileSystem.getDirectoryForPath(HOME.fullPath+"/css");
+            HOME.create(); IMAGES.create(); CSS.create();
+
+            //Now we start creating our HTML, which is put in the string HTML
+            HTML += "<html>"+
+                        "<head>"+
+                            "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/funcspec.css\">"+
+                        "</head>"+
+                        "<body>"+
+                            "<div id=\"title\">"+
+                                "<h1>Functional Specification for <b>"+this.project.name+"</b></h1>"+
+                            "</div>"+
+                            "<div id=\"header\">"+
+                                this._convertProjectToHTMLHeader(this.project)+
+                            "</div>"+
+                            //creates divs of class 'use-cases'
+                            this._createUseCaseHTML()+
+                        "</body>"+
+                    "</html>";
+
+            //Writing the content to the files, actually
+            // creating the HTML page for the user
+            this._writeCSS(CSS)
+                .then(result.resolve, result.reject);
+            this._writeImages(IMAGES, this.project)
+                .then(result.resolve, result.reject);
+            this._writeHTML(HOME, HTML)
+                .then(result.resolve, result.reject);
+
+            return result.promise();
+        };
+
+
+    /**
+    * @desc This function preforms the high level execution, taking a Project
+    *       element and path, and creating the Functional Specification document
+    * @param    project : type.Project : The Project element to convert into a document
+    * @param    path : String : Folder to save document in. Defaults to directory if FILEPATH given
+    * @return   Deferred resolution : A REJECT or RESOLVE ending for our Deferred
+    */
+    function execute(project, path) {
+        var result = new $.Deferred();
+        var FuncSpecObj = new FunctionalSpec();
+        var DIRECTORY = FileSystem.getDirectoryForPath(path),
+            HOME      = DIRECTORY.fullPath + "/staruml_html";
+
+        return FuncSpecObj.createHTML(project, HOME);
     }
 
     //This exports the functions we've defined so that other scripts
