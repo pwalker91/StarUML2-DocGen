@@ -110,8 +110,8 @@ define(function (require, exports, module) {
                     //Looking for the header title, starting at the end of the
                     // string in 'text' minus the length of the header
                     var found = text.toUpperCase()
-                                    .indexOf(headers[ind],
-                                             text.length-headers[ind].length);
+                                    .indexOf(headers[subind],
+                                             text.length-headers[subind].length-1);
                     if (found !== -1) {
                         text = text.slice(0,found);
                     }
