@@ -108,6 +108,7 @@ define(function (require, exports, module) {
                 UCObj[headers[ind]] = UCObj.header.slice(start,end);
                 console.log(UCObj[headers[ind]]);
             }
+            console.log("");
 
             var HTML = "";
             HTML += "<div class=\"use-case-elab\">\n"+
