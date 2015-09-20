@@ -11,13 +11,12 @@ define(function (require, exports, module) {
     "use strict";
 
     //Importing the StarUML global modules that we want to use
-    var Dialogs             = app.getModule("dialogs/Dialogs"),
-        FileSystem          = app.getModule("filesystem/FileSystem"),
-        FileUtils           = app.getModule("file/FileUtils"),
-        Async               = app.getModule("utils/Async"),
-        SelectionManager    = app.getModule("engine/SelectionManager"),
-        CommandManager      = app.getModule("command/CommandManager"),
-        ExtensionUtils      = app.getModule("utils/ExtensionUtils");
+    var Dialogs         = app.getModule("dialogs/Dialogs"),
+        FileSystem      = app.getModule("filesystem/FileSystem"),
+        FileUtils       = app.getModule("file/FileUtils"),
+        Async           = app.getModule("utils/Async"),
+        CommandManager  = app.getModule("command/CommandManager"),
+        ExtensionUtils  = app.getModule("utils/ExtensionUtils");
 
 
     /* BEGIN CLASS */
@@ -114,7 +113,7 @@ define(function (require, exports, module) {
             var imagePath = IMAGES.fullPath+diagram.name+".png";
             this._writeImage(diagram, imagePath);
             var HTML =  "<div class=\"use-case-image\">\n"+
-                            "<img src=\"/images/"+diagram.name+".png\">\n"+
+                            "<img src=\"images/"+diagram.name+".png\">\n"+
                         "</div>\n";
             return HTML;
         };
@@ -164,7 +163,9 @@ define(function (require, exports, module) {
 
       /* -- Write Files ---------------------------------------------------- */
         /**
-        *
+        * @desc Creates a copy of the contents in the extension's CSS file
+        *       (given by 'filename'). It does this by reading the content,
+        *       and writing to another file.
         */
         FunctionalSpec.prototype._writeCSS = function(CSS, filename) {
             ExtensionUtils.loadFile(module, "/css/"+filename)
@@ -177,7 +178,11 @@ define(function (require, exports, module) {
         *
         */
         FunctionalSpec.prototype._writeImage = function(diagram, path) {
-            console.log("creating image", diagram.name, path);
+            //We need to create the file using FileSystem before using
+            // CommandManager. Why? Because it seems that the directory or file
+            // isn't actually created by the time we get to here, and we need
+            // that directory to save the file in.
+            FileSystem.getFileForPath(path);
             CommandManager.get("file.exportDiagramAs.png")
                 ._commandFn(diagram, path);
         };

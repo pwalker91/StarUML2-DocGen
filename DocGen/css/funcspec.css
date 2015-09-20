@@ -1,6 +1,8 @@
-.title, .header, .user-cases {
+.title, .header, .user-cases, .use-case-elab {
     padding-left: 20px;
     padding-right: 20px;
+    margin: 4px;
+    font-family: serif;
 }
 .title {
     text-align: center;
@@ -17,5 +19,10 @@
 .use-cases {
     text-align: left;
     padding-bottom: 30px;
-    background-color: #BBBBBB;
+    background-color: #D0D0D0;
 }
+    .use-case-elab {
+        text-align: left;
+        padding-bottom: 8px;
+        background-color: #CACACA;
+    }

@@ -87,7 +87,6 @@ define(function (require, exports, module) {
                         console.log("User selected project", selected);
                         baseElem = selected;
                         if (!path) {
-                            window.alert("Please select the directory to place the documents in...");
                             FileSystem.showOpenDialog(
                                 //false (not allowing mulitple selection)
                                 //true (user can select directories)
