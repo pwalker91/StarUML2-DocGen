@@ -109,7 +109,7 @@ define(function (require, exports, module) {
         * @return   String of HTML
         */
         FunctionalSpec.prototype._convertDiagramToHTML = function(diagram, IMAGES) {
-            var imagePath = IMAGES.fullPath+"/"+diagram.name+".png";
+            var imagePath = IMAGES.fullPath+diagram.name+".png";
             this._writeImage(diagram, imagePath);
             var HTML =  "<div class=\"use-case-image\">\n"+
                             "<img src=\"/images/"+diagram.name+".png\">\n"+
@@ -167,7 +167,7 @@ define(function (require, exports, module) {
         FunctionalSpec.prototype._writeCSS = function(CSS, filename) {
             ExtensionUtils.loadFile(module, "/css/"+filename)
                 .done(function(contents) {
-                    FileSystem.getFileForPath(CSS.fullPath+"/"+filename)
+                    FileSystem.getFileForPath(CSS.fullPath+filename)
                         .write(contents, {"blind":true});
                 });
         };
@@ -183,7 +183,7 @@ define(function (require, exports, module) {
         *
         */
         FunctionalSpec.prototype._writeHTML = function(HOME, filename, contents) {
-            FileSystem.getFileForPath(HOME.fullPath+"/"+filename)
+            FileSystem.getFileForPath(HOME.fullPath+filename)
                 .write(contents, {"blind":true});
         };
 
@@ -220,8 +220,8 @@ define(function (require, exports, module) {
             //Creating the necessary directories that we will be saving our HTML,
             // image, and CSS documents to.
             var HOME    = FileSystem.getDirectoryForPath(home),
-                IMAGES  = FileSystem.getDirectoryForPath(HOME.fullPath+"/images"),
-                CSS     = FileSystem.getDirectoryForPath(HOME.fullPath+"/css");
+                IMAGES  = FileSystem.getDirectoryForPath(HOME.fullPath+"images"),
+                CSS     = FileSystem.getDirectoryForPath(HOME.fullPath+"css");
             HOME.create(); IMAGES.create(); CSS.create();
 
             //Now we start creating our HTML, which is put in the string HTML
@@ -262,7 +262,7 @@ define(function (require, exports, module) {
         var result = new $.Deferred();
         var FuncSpecObj = new FunctionalSpec();
         var DIRECTORY = FileSystem.getDirectoryForPath(path),
-            HOME      = DIRECTORY.fullPath + "/staruml_html";
+            HOME      = DIRECTORY.fullPath+"staruml_html";
 
         return FuncSpecObj.createHTML(project, HOME);
     }
