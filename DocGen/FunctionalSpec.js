@@ -90,22 +90,34 @@ define(function (require, exports, module) {
             //Now that we have the main text separated into the header and body
             // info, we parse it to create the HTML page content.
             for (ind=0; ind<headers.length; ind++) {
-                var searchterm = headers[ind].toLowerCase()+":";
-                console.log(searchterm);
-                var start = UCObj.header.toLowerCase()
+                var searchterm = headers[ind]+":";
+                var start = UCObj.header.toUpperCase()
                                         .indexOf(searchterm);
                 if (start === -1) {
                     continue;
                 } else {
                     start += (searchterm.length);
                 }
-                var end = UCObj.header.toLowerCase()
+                var end = UCObj.header.toUpperCase()
                                       .indexOf(":", start);
-                console.log(start,end);
                 if (end === -1) {
                     end = UCObj.header.length;
                 }
-                UCObj[headers[ind]] = UCObj.header.slice(start,end);
+                var text = UCObj.header.slice(start,end);
+                //This is removing the next category title from the string, if
+                // it was grabbed in .slice() above
+                for (subind=0; subind<headers.length; subind++) {
+                    //Looking for the header title, starting at the end of the
+                    // string in 'text' minus the length of the header
+                    var found = text.toUpperCase()
+                                    .indexOf(headers[ind],
+                                             text.length-headers[ind].length);
+                    if (found !== -1) {
+                        text = text.slice(0,found);
+                    }
+                }
+                text = text.trim();
+                UCObj[headers[ind]] = text;
                 console.log(UCObj[headers[ind]]);
             }
             console.log("");
