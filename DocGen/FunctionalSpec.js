@@ -93,21 +93,7 @@ define(function (require, exports, module) {
                 var start = UCObj.header
                                  .indexOf(headers[ind]+":")+
                                  (headers[ind].length+1);
-                var end = start;
-                //This looks through the remaining string, and finds the next field
-                // that was given. It starts by looking for a ":", and then sees if
-                // the previous text was one on the possible headers.
-                while (true) {
-                    var _end = UCObj.header.indexOf(":", end);
-                    for (subind=0; subind<headers.length; subind++) {
-                        var possibleheader = UCObj.header.slice(_end-headers[subind].length,_end);
-                        if (possibleheader === headers[subind]) {
-                            end = _end-headers[subind].length;
-                            break;
-                        }
-                    }
-                    end = _end;
-                }
+                var end = UCObj.header.indexOf(":", (start+(headers[ind].length+1)) );
                 if (end === -1) {
                     end = UCObj.header.length;
                 }
