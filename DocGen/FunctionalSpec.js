@@ -90,10 +90,12 @@ define(function (require, exports, module) {
             //Now that we have the main text separated into the header and body
             // info, we parse it to create the HTML page content.
             for (ind=0; ind<headers.length; ind++) {
-                var searchterm = headers[ind]+":";
+                var searchterm = headers[ind].toLowerCase()+":";
                 console.log(searchterm);
-                var start = UCObj.header.indexOf(searchterm)+(searchterm.length+1);
-                var end = UCObj.header.indexOf(":", start);
+                var start = UCObj.header.toLowerCase()
+                                        .indexOf(searchterm)+(searchterm.length);
+                var end = UCObj.header.toLowerCase()
+                                      .indexOf(":", start);
                 console.log(start,end);
                 if (end === -1) {
                     end = UCObj.header.length;
