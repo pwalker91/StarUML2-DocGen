@@ -14,9 +14,9 @@ define(function (require, exports, module) {
     var Dialogs         = app.getModule("dialogs/Dialogs"),
         FileSystem      = app.getModule("filesystem/FileSystem"),
         FileUtils       = app.getModule("file/FileUtils"),
-        Async           = app.getModule("utils/Async"),
         CommandManager  = app.getModule("command/CommandManager"),
-        ExtensionUtils  = app.getModule("utils/ExtensionUtils");
+        ExtensionUtils  = app.getModule("utils/ExtensionUtils"),
+        DocGenMixins    = require("DocGen/_mixins");
 
 
     /* BEGIN CLASS */
@@ -38,52 +38,30 @@ define(function (require, exports, module) {
 
       /* -- Extract Elements ----------------------------------------------- */
         /**
-        * @desc This takes a given object, which is assumed to be a StarUML object
-        *       that has "ownedElements", and checks that it is of a given type.
-        *       It then loops through its owned elements, searching for the second
-        *       given type.
-        * @param    StarUMLType : Class : A class type in StarUML 2
-        * @return   Array of elements extracted
+        * @desc Extracting elements of a certain type from a given object
         */
-        FunctionalSpec.prototype._extractType = function(obj, objType, searchType) {
-            if (obj !== null && (obj instanceof objType)) {
-                var allElems = [],
-                    _oldlength = obj.ownedElements.length,
-                    _newlength = 0;
-                for (var ind=0; ind<obj.ownedElements.length; ind++) {
-                    var _newitem = obj.ownedElements[ind];
-                    if (_newitem instanceof searchType) {
-                        _newlength = allElems.push( _newitem );
-                        if (_newlength === _oldlength+1) {
-                            _oldlength = _newlength;
-                        }
-                    }
-                }
-                return allElems;
-            }
-            return [];
-        };
+        FunctionalSpec.prototype._extractElements = DocGenMixins.extractElements;
         /**
         * @desc Given that the FunctionalSpec object has a Project element in
         *       its 'project' attribute, this extracts all of the UML Models inside
         * @return   Array of UMLModel(s)
         */
         FunctionalSpec.prototype._extractUMLModels = function() {
-            return this._extractType(this.project, type.Project, type.UMLModel);
+            return this._extractElements(this.project, type.UMLModel);
         };
         /**
         * @desc Uses the given model, and returns an array of all Use Cases within it
         * @return   Array of UMLUseCase(s)
         */
         FunctionalSpec.prototype._extractUseCases = function(aModel) {
-            return this._extractType(aModel, type.UMLModel, type.UMLUseCase);
+            return this._extractElements(aModel, type.UMLUseCase);
         };
         /**
         * @desc Uses the given model, and returns an array of all Diagrams within it
         * @return   Array of UMLDiagram(s)
         */
         FunctionalSpec.prototype._extractDiagrams = function(aModel) {
-            return this._extractType(aModel, type.UMLModel, type.UMLUseCaseDiagram);
+            return this._extractElements(aModel, type.UMLUseCaseDiagram);
         };
 
       /* -- Convert to HTML ------------------------------------------------ */
@@ -163,36 +141,17 @@ define(function (require, exports, module) {
 
       /* -- Write Files ---------------------------------------------------- */
         /**
-        * @desc Creates a copy of the contents in the extension's CSS file
-        *       (given by 'filename'). It does this by reading the content,
-        *       and writing to another file.
+        * @desc Creating a CSS file
         */
-        FunctionalSpec.prototype._writeCSS = function(CSS, filename) {
-            ExtensionUtils.loadFile(module, "/css/"+filename)
-                .done(function(contents) {
-                    FileSystem.getFileForPath(CSS.fullPath+filename)
-                        .write(contents, {"blind":true});
-                });
-        };
+        FunctionalSpec.prototype._writeCSS = DocGenMixins.writeCSS;
         /**
-        *
+        * @desc Creating an image file from a diagram
         */
-        FunctionalSpec.prototype._writeImage = function(diagram, path) {
-            //We need to create the file using FileSystem before using
-            // CommandManager. Why? Because it seems that the directory or file
-            // isn't actually created by the time we get to here, and we need
-            // that directory to save the file in.
-            FileSystem.getFileForPath(path);
-            CommandManager.get("file.exportDiagramAs.png")
-                ._commandFn(diagram, path);
-        };
+        FunctionalSpec.prototype._writeImage = DocGenMixins.writeImage;
         /**
-        *
+        * @desc Creating an HTML file
         */
-        FunctionalSpec.prototype._writeHTML = function(HOME, filename, contents) {
-            FileSystem.getFileForPath(HOME.fullPath+filename)
-                .write(contents, {"blind":true});
-        };
+        FunctionalSpec.prototype._writeHTML = DocGen.writeHTML;
 
       /* -- Create HTML ---------------------------------------------------- */
         /**
