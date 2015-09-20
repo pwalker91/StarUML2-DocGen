@@ -39,6 +39,7 @@ define(function (require, exports, module) {
         // at the end of the file we are requiring. In my case, I put the object
         // constructor for my 'DesignSpec' object in the 'exports' object under
         // the attribute 'object'.
+        DocGenMixins    = require("DocGen/DocGenMixins"),
         FunctionalSpec  = require("DocGen/FunctionalSpec"),
         DesignSpec      = require("DocGen/DesignSpec");
 

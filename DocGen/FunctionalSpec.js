@@ -16,7 +16,7 @@ define(function (require, exports, module) {
         FileUtils       = app.getModule("file/FileUtils"),
         CommandManager  = app.getModule("command/CommandManager"),
         ExtensionUtils  = app.getModule("utils/ExtensionUtils"),
-        DocGenMixins    = require("_mixins");
+        DocGenMixins    = require("DocGen/DocGenMixins");
 
 
     /* BEGIN CLASS */
@@ -151,12 +151,13 @@ define(function (require, exports, module) {
         /**
         * @desc Creating an HTML file
         */
-        FunctionalSpec.prototype._writeHTML = DocGen.writeHTML;
+        FunctionalSpec.prototype._writeHTML = DocGenMixins.writeHTML;
 
       /* -- Create HTML ---------------------------------------------------- */
         /**
         * @desc Returns a string of HTML, the different models in the project
         *       which will become information on the HTML page
+        * @param    IMAGES : Directory Object, where the Images will be saved
         * @return   String of HTML
         */
         FunctionalSpec.prototype._createUseCaseHTML = function(IMAGES) {
@@ -170,11 +171,14 @@ define(function (require, exports, module) {
             return HTML;
         };
         /**
-        *
+        * @desc This is the main function of our class, which converts a given
+        *       Project into an HTML file, and saves it to the given home path
+        * @param    project : Project class : The project to convert into HTML
+        * @param    home : String : The path to the home folder to save to
+        * @return   Deferred Resolve/Reject, whether the function completed.
         */
         FunctionalSpec.prototype.createHTML = function(project, home) {
             var result = $.Deferred();
-            var HTML = "";
 
             //Some bookkeeping to do, like checking that we were given a project
             if ( !(project instanceof type.Project) ) {
@@ -188,29 +192,35 @@ define(function (require, exports, module) {
             var HOME    = FileSystem.getDirectoryForPath(home),
                 IMAGES  = FileSystem.getDirectoryForPath(HOME.fullPath+"images"),
                 CSS     = FileSystem.getDirectoryForPath(HOME.fullPath+"css");
-            HOME.create(); IMAGES.create(); CSS.create();
-
-            //Now we start creating our HTML, which is put in the string HTML
-            var cssfn = "funcspec.css";
-            HTML += "<html>\n"+
-                        "<head>\n"+
-                            "<link rel=\"stylesheet\" type=\"text/css\" "+
-                                  "href=\"css/"+cssfn+"\">"+
-                        "</head>\n"+
-                        "<body>\n"+
-                            "<div class=\"title\">"+
-                                "<h1>Functional Specification for <b>"+this.project.name+"</b></h1>"+
-                            "</div>\n"+
-                            this._convertProjectToHTMLHeader(this.project)+"\n"+
-                            //creates div(s) of class 'use-cases'
-                            this._createUseCaseHTML(IMAGES)+"\n"+
-                        "</body>\n"+
-                    "</html>";
-
-            //Writing the content to the files, actually
-            // creating the HTML page for the user
-            this._writeCSS(CSS, cssfn);
-            this._writeHTML(HOME, this.project.name+".html", HTML);
+            //We want the creation of files to happen after the necessary directories
+            // are created, so we embed the code in a callback function.
+            //In this case, I want the HOME folder to be created before I create
+            // the IMAGES and CSS folders. Then, once all three directories
+            // are created, I generate and create my HTML and PNG files.
+            HOME.create(function(err, stats){
+                var cssfn = "funcspec.css";
+                IMAGES.create(function(er, stats){
+                    var HTML = "";
+                    HTML += "<html>\n"+
+                                "<head>\n"+
+                                    "<link rel=\"stylesheet\" type=\"text/css\" "+
+                                          "href=\"css/"+cssfn+"\">"+
+                                "</head>\n"+
+                                "<body>\n"+
+                                    "<div class=\"title\">"+
+                                        "<h1>Functional Specification for <b>"+this.project.name+"</b></h1>"+
+                                    "</div>\n"+
+                                    this._convertProjectToHTMLHeader(this.project)+"\n"+
+                                    //creates div(s) of class 'use-cases'
+                                    this._createUseCaseHTML(IMAGES)+"\n"+
+                                "</body>\n"+
+                            "</html>";
+                    this._writeHTML(HOME, this.project.name+".html", HTML);
+                });
+                CSS.create(function(err, stats){
+                    this._writeCSS(CSS, cssfn);
+                });
+            });
 
             return result.resolve();
         };
@@ -221,11 +231,10 @@ define(function (require, exports, module) {
     * @desc This function preforms the high level execution, taking a Project
     *       element and path, and creating the Functional Specification document
     * @param    project : type.Project : The Project element to convert into a document
-    * @param    path : String : Folder to save document in. Defaults to directory if FILEPATH given
+    * @param    path : String : Folder to save documents in. Defaults to directory if FILEPATH given
     * @return   Deferred resolution : A REJECT or RESOLVE ending for our Deferred
     */
     function execute(project, path) {
-        var result = new $.Deferred();
         var FuncSpecObj = new FunctionalSpec();
         var DIRECTORY = FileSystem.getDirectoryForPath(path),
             HOME      = DIRECTORY.fullPath+"staruml_html";
