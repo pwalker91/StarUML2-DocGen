@@ -93,7 +93,12 @@ define(function (require, exports, module) {
                 var searchterm = headers[ind].toLowerCase()+":";
                 console.log(searchterm);
                 var start = UCObj.header.toLowerCase()
-                                        .indexOf(searchterm)+(searchterm.length);
+                                        .indexOf(searchterm);
+                if (start === -1) {
+                    continue;
+                } else {
+                    start += (searchterm.length);
+                }
                 var end = UCObj.header.toLowerCase()
                                       .indexOf(":", start);
                 console.log(start,end);
