@@ -16,7 +16,7 @@ define(function (require, exports, module) {
         FileUtils       = app.getModule("file/FileUtils"),
         CommandManager  = app.getModule("command/CommandManager"),
         ExtensionUtils  = app.getModule("utils/ExtensionUtils"),
-        DocGenMixins    = require("DocGen/_mixins");
+        DocGenMixins    = require("_mixins");
 
 
     /* BEGIN CLASS */
