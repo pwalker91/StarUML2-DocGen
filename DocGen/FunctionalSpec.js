@@ -10,13 +10,15 @@
 define(function (require, exports, module) {
     "use strict";
 
+    console.log(module);
+
     //Importing the StarUML global modules that we want to use
     var Dialogs         = app.getModule("dialogs/Dialogs"),
         FileSystem      = app.getModule("filesystem/FileSystem"),
         FileUtils       = app.getModule("file/FileUtils"),
         CommandManager  = app.getModule("command/CommandManager"),
         ExtensionUtils  = app.getModule("utils/ExtensionUtils"),
-        DocGenMixins    = require("DocGen/DocGenMixins");
+        common          = require("DocGen/common");
 
 
     /* BEGIN CLASS */
@@ -40,7 +42,7 @@ define(function (require, exports, module) {
         /**
         * @desc Extracting elements of a certain type from a given object
         */
-        FunctionalSpec.prototype._extractElements = DocGenMixins.extractElements;
+        FunctionalSpec.prototype._extractElements = common.extractElements;
         /**
         * @desc Given that the FunctionalSpec object has a Project element in
         *       its 'project' attribute, this extracts all of the UML Models inside
@@ -143,15 +145,15 @@ define(function (require, exports, module) {
         /**
         * @desc Creating a CSS file
         */
-        FunctionalSpec.prototype._writeCSS = DocGenMixins.writeCSS;
+        FunctionalSpec.prototype._writeCSS = common.writeCSS;
         /**
         * @desc Creating an image file from a diagram
         */
-        FunctionalSpec.prototype._writeImage = DocGenMixins.writeImage;
+        FunctionalSpec.prototype._writeImage = common.writeImage;
         /**
         * @desc Creating an HTML file
         */
-        FunctionalSpec.prototype._writeHTML = DocGenMixins.writeHTML;
+        FunctionalSpec.prototype._writeHTML = common.writeHTML;
 
       /* -- Create HTML ---------------------------------------------------- */
         /**
