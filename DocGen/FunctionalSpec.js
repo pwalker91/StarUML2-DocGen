@@ -168,23 +168,22 @@ define(function (require, exports, module) {
             ExtensionUtils.loadFile(module, "/css/"+filename)
                 .done(function(contents) {
                     FileSystem.getFileForPath(CSS.fullPath+"/"+filename)
-                        .write(contents);
+                        .write(contents, {"blind":true});
                 });
         };
         /**
         *
         */
         FunctionalSpec.prototype._writeImage = function(diagram, path) {
-            console.log("writing image", diagram, path);
-            console.log(CommandManager.get("file.exportDiagramAs.png")
-                ._commandFn(diagram, path) );
+            CommandManager.get("file.exportDiagramAs.png")
+                ._commandFn(diagram, path);
         };
         /**
         *
         */
         FunctionalSpec.prototype._writeHTML = function(HOME, filename, contents) {
             FileSystem.getFileForPath(HOME.fullPath+"/"+filename)
-                .write(contents);
+                .write(contents, {"blind":true});
         };
 
       /* -- Create HTML ---------------------------------------------------- */
