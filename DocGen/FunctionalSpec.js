@@ -133,13 +133,13 @@ define(function (require, exports, module) {
             var HTML = "";
             HTML += "<div class=\"use-case-elab\">\n"+
                         "<h2>"+usecase.name+"</h2><br>\n"+
-                        "<div class\"use-case-elab-header\">"+
+                        "<div class=\"use-case-elab-header\">"+
                             "<p><b>Description:</b> "+UCObj.DESCRIPTION+"</p>"+
                             "<p><b>Priority:</b> "+UCObj.PRIORITY+"</p>"+
                             "<p><b>Risk:</b> "+UCObj.RISK+"</p>"+
                             "<p><b>Main Scenario:</b></p>"+
                         "</div>"+
-                        "<div class\"use-case-elab-main\">"+
+                        "<div class=\"use-case-elab-main\">"+
                             "<p>"+UCObj.main.join("<br>")+"</p>"+
                         "</div>"+
                     "</div>\n";
