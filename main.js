@@ -87,7 +87,13 @@ define(function (require, exports, module) {
                         console.log("User selected project", selected);
                         baseElem = selected;
                         if (!path) {
+                            window.alert("Please select the directory to place the documents in...");
                             FileSystem.showOpenDialog(
+                                //false (not allowing mulitple selection)
+                                //true (user can select directories)
+                                //title
+                                //null (initial path)
+                                //null (filetypes allowed, everything)
                                 false, true, "Select a folder to place the documents in", null, null,
                                 function (err, files) {
                                     if (!err) {
@@ -131,6 +137,7 @@ define(function (require, exports, module) {
         // don't have anything in 'path', then we ask the user to tell us where
         // to save the files we are going to create
         else if ((baseElem instanceof type.Project) && !path) {
+            window.alert("Please select the directory to place the documents in...");
             FileSystem.showOpenDialog(
                 false, true, "Select a folder to place the documents in", null, null,
                 function (err, files) {

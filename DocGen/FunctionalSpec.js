@@ -175,6 +175,7 @@ define(function (require, exports, module) {
         *
         */
         FunctionalSpec.prototype._writeImage = function(diagram, path) {
+            console.log("creating image", diagram.name, path);
             CommandManager.get("file.exportDiagramAs.png")
                 ._commandFn(diagram, path);
         };
