@@ -99,7 +99,7 @@ define(function (require, exports, module) {
 
             var HTML = "";
             HTML += "<div class=\"use-case-elab\">\n"+
-                        "<h2>"+usecase.name+"</h2><br>\n"
+                        "<h2>"+usecase.name+"</h2><br>\n"+
                         "<p>One day, I'll grow up to be a real content...</p>\n"+
                     "</div>\n";
             return HTML;
