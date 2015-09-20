@@ -19,6 +19,8 @@ define(function (require, exports, module) {
         CommandManager      = app.getModule("command/CommandManager"),
         ExtensionUtils      = app.getModule("utils/ExtensionUtils");
 
+
+    /* BEGIN CLASS */
     /**
     * @desc This is the FunctionalSpec object, which we will use to
     *       catalogue information on the project we've been asked to export
@@ -35,8 +37,7 @@ define(function (require, exports, module) {
             Dialogs.showAlertDialog("Hello, world!");
         };
 
-        /* ----------------------------------------------------------------- */
-
+      /* -- Extract Elements ----------------------------------------------- */
         /**
         * @desc This takes a given object, which is assumed to be a StarUML object
         *       that has "ownedElements", and checks that it is of a given type.
@@ -72,103 +73,132 @@ define(function (require, exports, module) {
             return this._extractType(this.project, type.Project, type.UMLModel);
         };
         /**
-        *
+        * @desc Uses the given model, and returns an array of all Use Cases within it
+        * @return   Array of UMLUseCase(s)
         */
         FunctionalSpec.prototype._extractUseCases = function(aModel) {
             return this._extractType(aModel, type.UMLModel, type.UMLUseCase);
         };
         /**
-        *
+        * @desc Uses the given model, and returns an array of all Diagrams within it
+        * @return   Array of UMLDiagram(s)
         */
         FunctionalSpec.prototype._extractDiagrams = function(aModel) {
-            return this._extractType(aModel, type.UMLModel, type.UMLDiagram);
+            return this._extractType(aModel, type.UMLModel, type.UMLUseCaseDiagram);
         };
 
-        /* ----------------------------------------------------------------- */
-
+      /* -- Convert to HTML ------------------------------------------------ */
         /**
-        *
+        * @desc Takes a given use case, parses the documentation, and returns
+        *       the HTML for how it will appear on the HTML page.
+        * @return   String of HTML
         */
         FunctionalSpec.prototype._convertUseCaseToHTML = function(usecase) {
-            // body...
+
+            // parse usecase into object
+
+            var HTML = "";
+            HTML += "<div class=\"use-case-elab\">"+
+                    "</div>";
+            return HTML;
         };
         /**
-        *
+        * @desc Takes a given diagram (and the Directory object of where the
+        *       images will be placed) and returns the HTML for how it will
+        *       appear on the HTML page.
+        * @return   String of HTML
         */
-        FunctionalSpec.prototype._convertModelToHTML  = function(model) {
-            var HTML = "";
+        FunctionalSpec.prototype._convertDiagramToHTML = function(diagram, IMAGES) {
+            var imagePath = IMAGES.fullPath+"/"+diagram.name+".png";
+            this._writeImage(diagram, imagePath);
+            var HTML =  "<div class=\"use-case-image\">"+
+                            "<img src=\"/images/"+diagram.name+".png\">"+
+                        "</div>";
+            return HTML;
+        };
+        /**
+        * @desc Takes a given model (and the Directory object of where the
+        *       images will be placed) and returns the HTML for how it will
+        *       appear on the HTML page.
+        *       Delegates the creation of the Use Case Elaboration and Image
+        *       to other functions.
+        * @return   String of HTML
+        */
+        FunctionalSpec.prototype._convertModelToHTML  = function(model, IMAGES) {
+            var HTML = "", ind;
             var useCases = this._extractUseCases(model);
+            var diagrams = this._extractDiagrams(model);
 
-            //uml model(s)
-                // model = {"usecases":[], "diagrams":[]}
-                //use cases
-                //diagram
-            HTML += "<div id=\"use-cases\">";
-            for (var ind2=0; ind2<useCases.length; ind2++) {
-                HTML += this._convertUseCaseToHTML(useCases[ind2]);
+            HTML += "<div class=\"use-cases\">";
+            for (ind=0; ind<diagrams.length; ind++) {
+                HTML += this._convertDiagramToHTML(diagrams[ind], IMAGES);
+            }
+            for (ind=0; ind<useCases.length; ind++) {
+                HTML += this._convertUseCaseToHTML(useCases[ind]);
             }
             HTML += "</div>";
 
             return HTML;
         };
         /**
-        *
+        * @desc Returns a string of HTML, the content within the header of the
+        *       document being created.
+        * @return   String of HTML
         */
         FunctionalSpec.prototype._convertProjectToHTMLHeader = function(project) {
-            // body...
-        };
-
-        /* ----------------------------------------------------------------- */
-
-        /**
-        *
-        */
-        FunctionalSpec.prototype._writeCSS = function(CSSFolder) {
-            ExtensionUtils.loadFile(module, "css file path").done(function(){});
-            var result = $.Deferred();
-            return result.promise();
-        };
-        /**
-        *
-        */
-        FunctionalSpec.prototype._writeImages = function(ImageFolder, diagrams) {
-            var temp1 = project.find_a_diagram_object_to_use();
-            CommandManager.get("file.exportDiagramAs.png")
-                ._commandFn(temp1,"/Users/peterwalker/Desktop/imtestingthis1.png");
-        };
-        /**
-        *
-        */
-        FunctionalSpec.prototype._writeHTML = function(HomeFolder, HTML) {
-            newerfile.write("FILE CONTENTS",
-            function(err, stats) {
-                console.log("all directories", directory, newdirectory, newerdirectory);
-                console.log(newerdirectory.getContents(
-                    function(err, entries, stats){
-                        console.log("getting newer contents", err, entries, stats);
-                    }));
-                newerfile.moveToTrash(
-                function(err) {
-                    console.log(newerdirectory.getContents(
-                        function(err, entries, stats){
-                            console.log("getting newer contents 2", err, entries, stats);
-                        }));
-                });
-            });
-        };
-
-        /* ----------------------------------------------------------------- */
-
-        /**
-        *
-        */
-        FunctionalSpec.prototype._createUseCaseHTML = function() {
             var HTML = "";
+            HTML += "<div class=\"header\">"+
+                        "<div class=\"author\">"+
+                            "<p><b>Author:</b> "+project.author+"</p>"+
+                            "<p><b>Company:</b> "+project.company+" &copy;"+project.copyright+"</p>"+
+                            "<p><b>Version:</b> "+project.version+"</p>"+
+                        "</div>"+
+                        "<div class=\"intro\">"+
+                            "<p>"+project.documentation+"</p>"+
+                        "</div>"+
+                    "</div>";
+            return HTML;
+        };
+
+      /* -- Write Files ---------------------------------------------------- */
+        /**
+        *
+        */
+        FunctionalSpec.prototype._writeCSS = function(CSS, filename) {
+            ExtensionUtils.loadFile(module, CSS.fullPath+"/"+filename)
+                .done(function(contents) {
+                    FileSystem.getFileForPath(CSS.fullPath+"/"+filename)
+                        .write(contents);
+                });
+        };
+        /**
+        *
+        */
+        FunctionalSpec.prototype._writeImage = function(diagram, path) {
+            CommandManager.get("file.exportDiagramAs.png")
+                ._commandFn(diagram, path);
+        };
+        /**
+        *
+        */
+        FunctionalSpec.prototype._writeHTML = function(HOME, filename, contents) {
+            FileSystem.getFileForPath(HOME.fullPath+"/"+filename)
+                .write(contents);
+        };
+
+      /* -- Create HTML ---------------------------------------------------- */
+        /**
+        * @desc Returns a string of HTML, the different models in the project
+        *       which will become information on the HTML page
+        * @return   String of HTML
+        */
+        FunctionalSpec.prototype._createUseCaseHTML = function(IMAGES) {
+            var HTML = "", ind;
             var models = this._extractUMLModels();
             //This loop will potentially add multiple divs, all of which
             // represent a UMLModel from the project
-            for (var ind=0; ind<models.length; ind++) {
-                HTML += this._convertModelToHTML(models[ind]);
+            for (ind=0; ind<models.length; ind++) {
+                HTML += this._convertModelToHTML(models[ind], IMAGES);
             }
             return HTML;
         };
@@ -181,7 +211,7 @@ define(function (require, exports, module) {
 
             //Some bookkeeping to do, like checking that we were given a project
             if ( !(project instanceof type.Project) ) {
-                result.reject("Was not given a project");
+                return result.reject("Was not given a project");
             } else {
                 this.project = project;
             }
@@ -194,33 +224,31 @@ define(function (require, exports, module) {
             HOME.create(); IMAGES.create(); CSS.create();
 
             //Now we start creating our HTML, which is put in the string HTML
+            var cssfn = "funcspec.css";
             HTML += "<html>"+
                         "<head>"+
-                            "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/funcspec.css\">"+
+                            "<link rel=\"stylesheet\" type=\"text/css\" "+
+                                  "href=\"css/"+cssfn+"\">"+
                         "</head>"+
                         "<body>"+
-                            "<div id=\"title\">"+
+                            "<div class=\"title\">"+
                                 "<h1>Functional Specification for <b>"+this.project.name+"</b></h1>"+
                             "</div>"+
-                            "<div id=\"header\">"+
-                                this._convertProjectToHTMLHeader(this.project)+
-                            "</div>"+
-                            //creates divs of class 'use-cases'
-                            this._createUseCaseHTML()+
+                            this._convertProjectToHTMLHeader(this.project)+
+                            //creates div(s) of class 'use-cases'
+                            this._createUseCaseHTML(IMAGES)+
                         "</body>"+
                     "</html>";
+            console.log(HTML);
 
             //Writing the content to the files, actually
             // creating the HTML page for the user
-            this._writeCSS(CSS)
-                .then(result.resolve, result.reject);
-            this._writeImages(IMAGES, this.project)
-                .then(result.resolve, result.reject);
-            this._writeHTML(HOME, HTML)
-                .then(result.resolve, result.reject);
+            this._writeCSS(CSS, cssfn);
+            this._writeHTML(HOME, this.project.name+".html", HTML);
 
-            return result.promise();
+            return result.resolve();
         };
+    /* END CLASS */
 
 
     /**
