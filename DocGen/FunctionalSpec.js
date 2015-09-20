@@ -98,8 +98,8 @@ define(function (require, exports, module) {
             // parse usecase into object
 
             var HTML = "";
-            HTML += "<div class=\"use-case-elab\">"+
-                    "</div>";
+            HTML += "<div class=\"use-case-elab\">\n"+
+                    "</div>\n";
             return HTML;
         };
         /**
@@ -111,9 +111,9 @@ define(function (require, exports, module) {
         FunctionalSpec.prototype._convertDiagramToHTML = function(diagram, IMAGES) {
             var imagePath = IMAGES.fullPath+"/"+diagram.name+".png";
             this._writeImage(diagram, imagePath);
-            var HTML =  "<div class=\"use-case-image\">"+
-                            "<img src=\"/images/"+diagram.name+".png\">"+
-                        "</div>";
+            var HTML =  "<div class=\"use-case-image\">\n"+
+                            "<img src=\"/images/"+diagram.name+".png\">\n"+
+                        "</div>\n";
             return HTML;
         };
         /**
@@ -129,14 +129,14 @@ define(function (require, exports, module) {
             var useCases = this._extractUseCases(model);
             var diagrams = this._extractDiagrams(model);
 
-            HTML += "<div class=\"use-cases\">";
+            HTML += "<div class=\"use-cases\">\n";
             for (ind=0; ind<diagrams.length; ind++) {
-                HTML += this._convertDiagramToHTML(diagrams[ind], IMAGES);
+                HTML += this._convertDiagramToHTML(diagrams[ind], IMAGES)+"\n";
             }
             for (ind=0; ind<useCases.length; ind++) {
-                HTML += this._convertUseCaseToHTML(useCases[ind]);
+                HTML += this._convertUseCaseToHTML(useCases[ind])+"\n";
             }
-            HTML += "</div>";
+            HTML += "</div>\n";
 
             return HTML;
         };
@@ -147,16 +147,16 @@ define(function (require, exports, module) {
         */
         FunctionalSpec.prototype._convertProjectToHTMLHeader = function(project) {
             var HTML = "";
-            HTML += "<div class=\"header\">"+
-                        "<div class=\"author\">"+
-                            "<p><b>Author:</b> "+project.author+"</p>"+
-                            "<p><b>Company:</b> "+project.company+" &copy;"+project.copyright+"</p>"+
-                            "<p><b>Version:</b> "+project.version+"</p>"+
-                        "</div>"+
-                        "<div class=\"intro\">"+
-                            "<p>"+project.documentation+"</p>"+
-                        "</div>"+
-                    "</div>";
+            HTML += "<div class=\"header\">\n"+
+                        "<div class=\"author\">\n"+
+                            "<p><b>Author:</b> "+project.author+"</p>\n"+
+                            "<p><b>Company:</b> "+project.company+" &copy;"+project.copyright+"</p>\n"+
+                            "<p><b>Version:</b> "+project.version+"</p>\n"+
+                        "</div>\n"+
+                        "<div class=\"intro\">\n"+
+                            "<p>"+project.documentation+"</p>\n"+
+                        "</div>\n"+
+                    "</div>\n";
             return HTML;
         };
 
@@ -175,8 +175,9 @@ define(function (require, exports, module) {
         *
         */
         FunctionalSpec.prototype._writeImage = function(diagram, path) {
-            CommandManager.get("file.exportDiagramAs.png")
-                ._commandFn(diagram, path);
+            console.log("writing image", diagram, path);
+            console.log(CommandManager.get("file.exportDiagramAs.png")
+                ._commandFn(diagram, path) );
         };
         /**
         *
@@ -225,21 +226,20 @@ define(function (require, exports, module) {
 
             //Now we start creating our HTML, which is put in the string HTML
             var cssfn = "funcspec.css";
-            HTML += "<html>"+
-                        "<head>"+
+            HTML += "<html>\n"+
+                        "<head>\n"+
                             "<link rel=\"stylesheet\" type=\"text/css\" "+
                                   "href=\"css/"+cssfn+"\">"+
-                        "</head>"+
-                        "<body>"+
+                        "</head>\n"+
+                        "<body>\n"+
                             "<div class=\"title\">"+
                                 "<h1>Functional Specification for <b>"+this.project.name+"</b></h1>"+
-                            "</div>"+
-                            this._convertProjectToHTMLHeader(this.project)+
+                            "</div>\n"+
+                            this._convertProjectToHTMLHeader(this.project)+"\n"+
                             //creates div(s) of class 'use-cases'
-                            this._createUseCaseHTML(IMAGES)+
-                        "</body>"+
+                            this._createUseCaseHTML(IMAGES)+"\n"+
+                        "</body>\n"+
                     "</html>";
-            console.log(HTML);
 
             //Writing the content to the files, actually
             // creating the HTML page for the user
