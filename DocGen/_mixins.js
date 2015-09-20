@@ -93,7 +93,7 @@ define(function (require, exports, module) {
     }
 
     //Adding our functions to exports
-    exports.extractType = extractType;
+    exports.extractElements = extractElements;
     exports.writeCSS = writeCSS;
     exports.writeImage = writeImage;
     exports.writeHTML = writeHTML;
