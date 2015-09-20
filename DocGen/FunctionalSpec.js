@@ -165,7 +165,7 @@ define(function (require, exports, module) {
         *
         */
         FunctionalSpec.prototype._writeCSS = function(CSS, filename) {
-            ExtensionUtils.loadFile(module, CSS.fullPath+"/"+filename)
+            ExtensionUtils.loadFile(module, "/css/"+filename)
                 .done(function(contents) {
                     FileSystem.getFileForPath(CSS.fullPath+"/"+filename)
                         .write(contents);
