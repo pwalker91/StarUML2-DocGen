@@ -118,18 +118,28 @@ define(function (require, exports, module) {
                 }
                 text = text.trim();
                 UCObj[headers[ind]] = text;
-                console.log(UCObj[headers[ind]]);
             }
-            console.log("");
+
+            //Parsing the Use Case Elaboration into a sequence of steps.
+            UCObj.main = UCObj.main.split("\n");
+            for (ind=0; ind<UCObj.main.length; ind++) {
+                UCObj.main[ind] = ( "<b>"+
+                                    UCObj.main[ind].slice(0, UCObj.main[ind].indexOf(":")+1)+
+                                    "</b>"+
+                                    UCObj.main[ind].slice(UCObj.main[ind].indexOf(":")+1)
+                                   );
+            }
 
             var HTML = "";
             HTML += "<div class=\"use-case-elab\">\n"+
                         "<h2>"+usecase.name+"</h2><br>\n"+
                         "<div class\"use-case-elab-header\">"+
-                            UCObj.header+
+                            "<p><b>Description:</b> "+UCObj.DESCRIPTION+"</p>"+
+                            "<p><b>Priority:</b> "+UCObj.PRIORITY+"</p>"+
+                            "<p><b>Risk:</b> "+UCObj.RISK+"</p>"+
                         "</div>"+
                         "<div class\"use-case-elab-main\">"+
-                            UCObj.main+
+                            "<p>"+UCObj.main.join("<br>")+"</p>"+
                         "</div>"+
                     "</div>\n";
             return HTML;
