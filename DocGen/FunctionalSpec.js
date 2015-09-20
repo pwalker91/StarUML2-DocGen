@@ -76,26 +76,53 @@ define(function (require, exports, module) {
         */
         FunctionalSpec.prototype._convertUseCaseToHTML = function(usecase) {
             //Parsing our use case into the elements we need for the HTML file
-            var content = usecase.documentation;
-            var usecaseObj = {"header":"", "main":""};
-            //Getting all text before "Main Scenario". '-2' is to ignore the preceding \n
-            usecaseObj.header = content.slice(0, content.toLowerCase
-                                                        .indexOf("main scenario:")-2)
-                                       .split("\n");
+            var content = usecase.documentation,
+                ind, subind,
+                UCObj = {},
+                headers = ["DESCRIPTION", "PRIORITY", "RISK", "ACTORS"];
+            //Getting all text before "Main Scenario". '-1' is to ignore the preceding \n
+            UCObj.header = content.slice(0, content.toUpperCase()
+                                                        .indexOf("MAIN SCENARIO:")-1);
             //Getting UC Elaboration, ignore "Main Scenario:\n"
-            usecaseObj.main = content.slice(content.toLowerCase
-                                                   .indexOf("main scenario:")+15)
-                                     .split("\n");
-            console.log(usecaseObj);
+            UCObj.main = content.slice(content.toUpperCase()
+                                                   .indexOf("MAIN SCENARIO:")+16);
+
+            //Now that we have the main text separated into the header and body
+            // info, we parse it to create the HTML page content.
+            for (ind=0; ind<headers.length; ind++) {
+                var start = UCObj.header
+                                 .indexOf(headers[ind]+":")+
+                                 (headers[ind].length+1);
+                var end = start;
+                //This looks through the remaining string, and finds the next field
+                // that was given. It starts by looking for a ":", and then sees if
+                // the previous text was one on the possible headers.
+                while (true) {
+                    var _end = UCObj.header.indexOf(":", end);
+                    for (subind=0; subind<headers.length; subind++) {
+                        var possibleheader = UCObj.header.slice(_end-headers[subind].length,_end);
+                        if (possibleheader === headers[subind]) {
+                            end = _end-headers[subind].length;
+                            break;
+                        }
+                    }
+                    end = _end;
+                }
+                if (end === -1) {
+                    end = UCObj.header.length;
+                }
+                UCObj[headers[ind]] = UCObj.header.slice(start,end);
+                console.log(UCObj[headers[ind]]);
+            }
 
             var HTML = "";
             HTML += "<div class=\"use-case-elab\">\n"+
                         "<h2>"+usecase.name+"</h2><br>\n"+
                         "<div class\"use-case-elab-header\">"+
-                            usecaseObj.header+
+                            UCObj.header+
                         "</div>"+
                         "<div class\"use-case-elab-main\">"+
-                            usecaseObj.main+
+                            UCObj.main+
                         "</div>"+
                     "</div>\n";
             return HTML;
