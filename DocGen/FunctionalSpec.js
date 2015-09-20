@@ -137,6 +137,7 @@ define(function (require, exports, module) {
                             "<p><b>Description:</b> "+UCObj.DESCRIPTION+"</p>"+
                             "<p><b>Priority:</b> "+UCObj.PRIORITY+"</p>"+
                             "<p><b>Risk:</b> "+UCObj.RISK+"</p>"+
+                            "<p><b>Main Scenario:</b></p>"+
                         "</div>"+
                         "<div class\"use-case-elab-main\">"+
                             "<p>"+UCObj.main.join("<br>")+"</p>"+
