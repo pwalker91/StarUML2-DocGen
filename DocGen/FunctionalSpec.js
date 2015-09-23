@@ -14,6 +14,7 @@ define(function (require, exports, module) {
     //Importing the StarUML global modules that we want to use
     var Dialogs         = app.getModule("dialogs/Dialogs"),
         FileSystem      = app.getModule("filesystem/FileSystem"),
+        Directory       = app.getModule("filesystem/Directory"),
         FileUtils       = app.getModule("file/FileUtils"),
         CommandManager  = app.getModule("command/CommandManager"),
         ExtensionUtils  = app.getModule("utils/ExtensionUtils"),
@@ -34,12 +35,13 @@ define(function (require, exports, module) {
         this.HOME    = HOME || null;
         //If this.HOME is a Directory object, then we can create the sub-folders
         // for the images and CSS
-        this.IMAGES  = (this.HOME !== null && (this.HOME instanceof type.Directory)) ?
-                        FileSystem.getDirectoryForPath(this.HOME.fullPath+"images") :
-                        null;
-        this.CSS     = (this.HOME !== null && (this.HOME instanceof type.Directory)) ?
-                        FileSystem.getDirectoryForPath(this.HOME.fullPath+"css") :
-                        null;
+        if (this.HOME !== null && (this.HOME instanceof Directory)) {
+            this.IMAGES = FileSystem.getDirectoryForPath(this.HOME.fullPath+"images");
+            this.CSS    = FileSystem.getDirectoryForPath(this.HOME.fullPath+"css");
+        } else {
+            this.IMAGES = null;
+            this.CSS    = null;
+        }
     }
         /**
         * @desc This is a simple function for testing that the object works
