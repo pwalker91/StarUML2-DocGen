@@ -11,9 +11,9 @@ define(function (require, exports, module) {
     "use strict";
 
     //Importing the StarUML global modules that we want to use
-    var Dialogs         = app.getModule("dialogs/Dialogs"),
+    var //Dialogs         = app.getModule("dialogs/Dialogs"),
+        //FileUtils       = app.getModule("file/FileUtils"),
         FileSystem      = app.getModule("filesystem/FileSystem"),
-        FileUtils       = app.getModule("file/FileUtils"),
         CommandManager  = app.getModule("command/CommandManager"),
         ExtensionUtils  = app.getModule("utils/ExtensionUtils");
 
