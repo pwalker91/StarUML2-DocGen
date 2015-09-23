@@ -65,6 +65,8 @@ define(function (require, exports, module) {
                         "</p>";
             }
             HTML += "</div>";
+
+            return HTML;
         };
         /**
         * @desc Converts this object into its HTML form for the Functional Specification
