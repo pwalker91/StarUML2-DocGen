@@ -78,7 +78,7 @@ define(function (require, exports, module) {
         FunctionalSpec.prototype.createDoc = function() {
             var result = $.Deferred();
             //Sanity check
-            if (!(this.project instanceof type.UMLProject)) {
+            if (!(this.project instanceof type.Project)) {
                 var err = "Did not have a project to convert";
                 console.log(err, this.project);
                 return result.reject(err);
