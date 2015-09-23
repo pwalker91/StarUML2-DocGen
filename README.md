@@ -9,6 +9,7 @@ Current Features
 -
 * Functional Specification Generation
   * Supports basic UML Use Case Diagrams (no packages)
+  * Support for packages (kinda... I think... not really tested)
 * Design Specification Generation
   * Currently a placeholder (nothing important happens)
 * A basic "Hello World"-like feature
@@ -16,9 +17,8 @@ Current Features
 Planned Features
 -
 * Functional Specification Generation
-  * Support for packages
   * Support for user specified CSS styling
   * Better default styling
-  * Explicit Parsing Requirements 
+  * Explicit Parsing Requirements
 * Design Specification Generation
   * Lots of things...
