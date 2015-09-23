@@ -60,7 +60,7 @@ define(function (require, exports, module) {
             for (var ind=0; ind<allActors.length; ind++) {
                 var actor = allActors[ind];
                 HTML += "<p>"+
-                            "<b>"+actor.name+"</b>"+
+                            "<b>"+actor.name+"</b>: "+
                             actor.documentation.trim()+
                         "</p>";
             }
