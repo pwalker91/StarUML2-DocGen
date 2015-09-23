@@ -50,10 +50,13 @@ define(function (require, exports, module) {
         * @return   String, the HTML for the Business Context
         */
         UseCaseModel.prototype._createFSHTML_BC = function() {
-            //We first create the "Business Context" for our document
+            //Collecting all of the actors for our "Business Context" section
             var allActors = this._collectActors();
+            var HTML = "";
+
+            //Generating the HTML for each actor
             HTML += "<div class=\"business-context\">"+
-                        "<h2>Business Context</h2>";
+                        "<h2>Business Context</h2><br>";
             for (var ind=0; ind<allActors.length; ind++) {
                 var actor = allActors[ind];
                 HTML += "<p>"+
