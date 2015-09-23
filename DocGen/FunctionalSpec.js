@@ -35,10 +35,12 @@ define(function (require, exports, module) {
         this.HOME    = HOME || null;
         //If this.HOME is a Directory object, then we can create the sub-folders
         // for the images and CSS
-        if (this.HOME !== null && (this.HOME instanceof Directory)) {
+        if (this.HOME !== null) {
+            this.HOME   = FileSystem.getDirectoryForPath(this.HOME);
             this.IMAGES = FileSystem.getDirectoryForPath(this.HOME.fullPath+"images");
             this.CSS    = FileSystem.getDirectoryForPath(this.HOME.fullPath+"css");
         } else {
+            this.HOME   = null;
             this.IMAGES = null;
             this.CSS    = null;
         }
