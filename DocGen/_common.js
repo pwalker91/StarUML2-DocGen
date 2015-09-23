@@ -52,7 +52,7 @@ define(function (require, exports, module) {
     * @param    filename : String, name of CSS file local to extension
     */
     function writeCSS(CSS, filename) {
-        ExtensionUtils.loadFile(module, "/css/"+filename)
+        ExtensionUtils.loadFile(module, "/_css/"+filename)
             .done(function(contents) {
                 FileSystem.getFileForPath(CSS.fullPath+filename)
                     .write(contents, {"blind":true});
