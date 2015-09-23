@@ -184,5 +184,5 @@ define(function (require, exports, module) {
 
 
     //Exporting our object constructor
-    exports.obj = UseCaseModel;
+    exports.obj = UseCasePackage;
 });
