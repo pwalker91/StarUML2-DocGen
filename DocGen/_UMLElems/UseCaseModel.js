@@ -81,7 +81,7 @@ define(function (require, exports, module) {
             // with the Use Case Elaborations for each Use Case and sub-package
             var HTML =  this._createFSHTML_BC() +
                         this._self.createFSHTML(IMAGES);
-            return HMTL;
+            return HTML;
         };
     /* END CLASS */
 
