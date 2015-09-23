@@ -17,7 +17,7 @@ define(function (require, exports, module) {
         FileUtils       = app.getModule("file/FileUtils"),
         CommandManager  = app.getModule("command/CommandManager"),
         ExtensionUtils  = app.getModule("utils/ExtensionUtils"),
-        UseCaseModels   = require("DocGen/_UMLModels/UseCaseModels"),
+        UseCaseModel    = require("DocGen/_UMLElems/UseCaseModel"),
         common          = require("DocGen/_common");
 
 
@@ -77,8 +77,9 @@ define(function (require, exports, module) {
             var result = $.Deferred();
             //Sanity check
             if (this.project !== type.UMLProject) {
-                console.log("Did not have a project to convert");
-                return result.reject("Did not have a project to convert");
+                var err = "Did not have a project to convert";
+                console.log(err);
+                return result.reject(err);
             }
 
             //Just to be safe, we will create the folders if they aren't already
@@ -106,7 +107,7 @@ define(function (require, exports, module) {
             var allUCModels = common.extractElements(this.project, type.UMLModel);
             for (var ind=0; ind<allUCModels.length; ind++) {
                 var model = new UseCaseModel.obj(allUCModels[ind]);
-                HTML += model.createHTML(this.IMAGES);
+                HTML += model.createFSHTML(this.IMAGES);
             }
             HTML +=     "</body>\n"+
                     "</html>";
