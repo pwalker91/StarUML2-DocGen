@@ -5,7 +5,7 @@
     "homepage": "https://github.com/pwalker91/StarUML2-DocGen",
     "issues": "https://github.com/pwalker91/StarUML2-DocGen/issues",
     "keywords": ["document", "generation", "HTML", "software", "engineering"],
-    "version": "0.3.3",
+    "version": "0.3.4",
     "author": {
         "name": "Peter Walker",
         "email": "peter.walker@sjsu.edu",
