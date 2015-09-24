@@ -31,6 +31,9 @@ define(function (require, exports, module) {
             this.usecases = common.extractElements(aPackage, type.UMLUseCase);
             this.diagrams = common.extractElements(aPackage, type.UMLUseCaseDiagram);
             this.packages = common.extractElements(aPackage, type.UMLPackage);
+            for (var ind=0; ind<this.packages.length; ind++) {
+                this.packages[ind] = new UseCasePackage(this.packages[ind]);
+            }
         }
     }
         /**
